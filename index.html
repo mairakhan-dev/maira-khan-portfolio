@@ -595,12 +595,10 @@
         }
         .coordination-gallery .gallery-item {
             aspect-ratio: 4 / 3;
-            background: var(--color-bg-dark);
             border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--color-white);
             font-weight: 500;
             font-size: 0.85rem;
             text-align: center;
@@ -609,6 +607,13 @@
             background: var(--color-bg);
             color: var(--color-text-light);
             transition: var(--transition);
+            overflow: hidden;
+        }
+        .coordination-gallery .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
         }
         .coordination-gallery .gallery-item:hover {
             border-color: var(--color-purple);
@@ -976,6 +981,25 @@
             font-weight: 700;
         }
 
+        /* video embed in modal */
+        .modal-video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: var(--radius-sm);
+            background: var(--color-bg-dark);
+            margin: 12px 0;
+        }
+        .modal-video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
         /* ============================================================
                FOOTER
             ============================================================ */
@@ -1227,9 +1251,9 @@
                     <a href="#contact" class="btn btn-outline">Let's Work Together</a>
                 </div>
                 <div class="hero-social">
-                    <a href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="https://www.linkedin.com/in/maira-khan-2936b93aa/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
                     <span class="sep">/</span>
-                    <a href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    <a href="https://github.com/mairakhan-dev" target="_blank" rel="noopener noreferrer">GitHub</a>
                     <span class="sep">/</span>
                     <a href="mailto:mairakhan.contact@gmail.com">Email</a>
                 </div>
@@ -1296,7 +1320,7 @@
                             <span>HTML</span><span>CSS</span><span>JavaScript</span><span>Vercel</span>
                         </div>
                         <div class="project-actions">
-                            <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline">View Live Demo</a>
+                            <a href="https://mairakhan-dev.github.io/AURIX/" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline">View Live Demo</a>
                             <button class="btn-link btn-sm" data-modal="aurix">Case Study →</button>
                         </div>
                     </div>
@@ -1415,12 +1439,12 @@
                 </div>
 
                 <div class="coordination-gallery reveal">
-                    <div class="gallery-item">Speaker Poster 01</div>
-                    <div class="gallery-item">Event Branding</div>
-                    <div class="gallery-item">Promotional Graphic</div>
-                    <div class="gallery-item">Speaker Poster 02</div>
-                    <div class="gallery-item">Registration UI</div>
-                    <div class="gallery-item">Social Media Asset</div>
+                    <div class="gallery-item"><img src="WhatsApp%20Image%202026-07-28%20at%2011.56.55%20PM.jpeg" alt="CTRL+FUTURE speaker poster - Flutter App Development with Talha Ali" /></div>
+                    <div class="gallery-item"><img src="WhatsApp%20Image%202026-07-28%20at%2011.59.14%20PM.jpeg" alt="CTRL+FUTURE speaker poster - Web Development with Syed Muhammad Moiz" /></div>
+                    <div class="gallery-item"><img src="WhatsApp%20Image%202026-07-28%20at%2011.58.22%20PM.jpeg" alt="CTRL+FUTURE speaker poster - Personal Branding & LinkedIn with Muhammad Usman Ali" /></div>
+                    <div class="gallery-item"><img src="WhatsApp%20Image%202026-07-28%20at%2011.59.55%20PM.jpeg" alt="CTRL+FUTURE speaker poster - Graphic Design & Branding with Abdul Mateen" /></div>
+                    <div class="gallery-item" style="background:var(--color-purple-dark);color:var(--color-white);font-weight:600;">CTRL+FUTURE<br><small style="font-weight:400;opacity:0.7;">Event Branding</small></div>
+                    <div class="gallery-item" style="background:var(--color-purple-dark);color:var(--color-white);font-weight:600;">CTRL+FUTURE<br><small style="font-weight:400;opacity:0.7;">Promotional Asset</small></div>
                 </div>
 
             </div>
@@ -1627,7 +1651,7 @@
                 </p>
                 <div class="contact-actions">
                     <a href="mailto:mairakhan.contact@gmail.com" class="btn btn-gold">Email Me</a>
-                    <a href="#" target="_blank" rel="noopener noreferrer" class="btn" style="background:rgba(255,255,255,0.06);color:var(--color-white);border:1px solid rgba(255,255,255,0.1);">LinkedIn</a>
+                    <a href="https://www.linkedin.com/in/maira-khan-2936b93aa/" target="_blank" rel="noopener noreferrer" class="btn" style="background:rgba(255,255,255,0.06);color:var(--color-white);border:1px solid rgba(255,255,255,0.1);">LinkedIn</a>
                 </div>
                 <p class="contact-email">
                     <strong>mairakhan.contact@gmail.com</strong>
@@ -1718,20 +1742,29 @@
                 </div>
                 <div>
                     <h4>05 — Outcome</h4>
-                    <p>A fully responsive e-commerce frontend ready for integration with backend services.</p>
+                    <p>A fully responsive e-commerce frontend ready for integration with backend services. <a href="https://mairakhan-dev.github.io/AURIX/" target="_blank" style="color:var(--color-purple);font-weight:600;">View live demo →</a></p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: AI Chatbot -->
+    <!-- MODAL: AI Chatbot (with video) -->
     <div class="modal-overlay" id="modal-aichatbot" role="dialog" aria-modal="true" aria-labelledby="modal-aichatbot-title">
         <div class="modal">
             <button class="modal-close" data-close aria-label="Close case study">&times;</button>
-            <span class="modal-tag">Case Study</span>
+            <span class="modal-tag">Demo</span>
             <h2 id="modal-aichatbot-title">AI Chatbot</h2>
             <p class="modal-meta">Artificial Intelligence · Chatbot Development</p>
             <div class="modal-body">
+                <div>
+                    <h4>Demo Video</h4>
+                    <div class="modal-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="demo.mp4" type="video/mp4" />
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
                 <div>
                     <h4>01 — Overview</h4>
                     <p>An AI chatbot demonstration developed as part of a practical AI project, with a focus on natural language understanding and response generation.</p>
@@ -1751,10 +1784,6 @@
                         <li>API integration</li>
                         <li>NLP libraries</li>
                     </ul>
-                </div>
-                <div>
-                    <h4>05 — Outcome</h4>
-                    <p>A functional AI chatbot demo that can be extended for various use cases. Demo video available upon request.</p>
                 </div>
             </div>
         </div>
