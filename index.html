@@ -1000,6 +1000,45 @@
             border: none;
         }
 
+        /* Video grid for editing projects */
+        .modal-video-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 8px;
+        }
+        .modal-video-grid .video-item {
+            background: var(--color-bg);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+            transition: var(--transition);
+        }
+        .modal-video-grid .video-item:hover {
+            border-color: var(--color-purple);
+        }
+        .modal-video-grid .video-item video {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: var(--color-bg-dark);
+            display: block;
+        }
+        .modal-video-grid .video-item .video-caption {
+            padding: 10px 14px 14px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--color-text);
+            border-top: 1px solid var(--color-border);
+            background: var(--color-white);
+        }
+        .modal-video-grid .video-item .video-caption small {
+            display: block;
+            font-weight: 400;
+            color: var(--color-text-muted);
+            font-size: 0.75rem;
+            margin-top: 2px;
+        }
+
         /* ============================================================
                FOOTER
             ============================================================ */
@@ -1046,6 +1085,10 @@
             }
             .modal {
                 padding: 32px 24px;
+            }
+            .modal-video-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
             }
         }
 
@@ -1127,6 +1170,9 @@
             }
 
             .modal .modal-body ul {
+                grid-template-columns: 1fr;
+            }
+            .modal-video-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -1351,7 +1397,7 @@
                     </div>
                 </article>
 
-                <!-- PROJECT 4: VIDEO EDITING -->
+                <!-- PROJECT 4: VIDEO EDITING (updated with TCF videos) -->
                 <article class="project-card reveal">
                     <div class="project-thumb" style="background: #1a1418;">
                         <div class="placeholder">
@@ -1363,14 +1409,14 @@
                         <span class="project-category">Creative Production · Video Editing</span>
                         <h3 class="project-name">Video Editing</h3>
                         <p class="project-desc">
-                            Selected video editing projects demonstrating storytelling, pacing, and visual communication across different formats.
+                            Video editing for TCF fundraising campaigns, including orientation sessions, volunteer recruitment, girls-only events, and football tournaments.
                         </p>
-                        <p class="project-role"><strong>My role:</strong> Video editing, post-production, creative direction.</p>
+                        <p class="project-role"><strong>My role:</strong> Video editing, post-production, creative direction, and visual storytelling for TCF events.</p>
                         <div class="project-tech">
                             <span>Premiere Pro</span><span>After Effects</span>
                         </div>
                         <div class="project-actions">
-                            <button class="btn-link btn-sm" data-modal="videoedit">Watch Video →</button>
+                            <button class="btn-link btn-sm" data-modal="videoedit">Watch Videos →</button>
                             <button class="btn-link btn-sm" data-modal="videoedit">Case Study →</button>
                         </div>
                     </div>
@@ -1789,37 +1835,70 @@
         </div>
     </div>
 
-    <!-- MODAL: Video Editing -->
+    <!-- MODAL: Video Editing (with 4 TCF videos) -->
     <div class="modal-overlay" id="modal-videoedit" role="dialog" aria-modal="true" aria-labelledby="modal-videoedit-title">
         <div class="modal">
             <button class="modal-close" data-close aria-label="Close case study">&times;</button>
             <span class="modal-tag">Case Study</span>
             <h2 id="modal-videoedit-title">Video Editing</h2>
-            <p class="modal-meta">Creative Production · Video Editing</p>
+            <p class="modal-meta">Creative Production · TCF Fundraising &amp; Events</p>
             <div class="modal-body">
                 <div>
                     <h4>01 — Overview</h4>
-                    <p>Selected video editing projects demonstrating storytelling, pacing, and visual communication across different formats and contexts.</p>
+                    <p>Video editing for TCF (The Citizens Foundation) fundraising campaigns and events, including orientation sessions, volunteer recruitment, girls-only events, and football tournaments.</p>
                 </div>
                 <div>
                     <h4>02 — Goal</h4>
-                    <p>Produce polished video content that communicates ideas clearly and engages the target audience.</p>
+                    <p>Produce compelling video content that drives engagement, encourages volunteer participation, and supports fundraising efforts for education.</p>
                 </div>
                 <div>
                     <h4>03 — My Role</h4>
-                    <p>Video editing, post-production, creative direction, and visual storytelling.</p>
+                    <p>Video editing, post-production, creative direction, and visual storytelling for all TCF-related video assets.</p>
                 </div>
                 <div>
-                    <h4>04 — Tools</h4>
-                    <ul>
-                        <li>Premiere Pro</li>
-                        <li>After Effects</li>
-                        <li>Color grading &amp; audio mixing</li>
-                    </ul>
+                    <h4>04 — Selected Videos</h4>
+                    <div class="modal-video-grid">
+                        <div class="video-item">
+                            <video controls preload="metadata">
+                                <source src="bestone.mp4" type="video/mp4" />
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-caption">
+                                TCF Orientation Session <small>Volunteer recruitment &amp; introduction</small>
+                            </div>
+                        </div>
+                        <div class="video-item">
+                            <video controls preload="metadata">
+                                <source src="comingsoon.mp4" type="video/mp4" />
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-caption">
+                                TCF Orientation Peshawar <small>Coming soon — event preview</small>
+                            </div>
+                        </div>
+                        <div class="video-item">
+                            <video controls preload="metadata">
+                                <source src="girlsevent.mp4" type="video/mp4" />
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-caption">
+                                Girls-Only Fundraising Event <small>Raising funds for TCF education</small>
+                            </div>
+                        </div>
+                        <div class="video-item">
+                            <video controls preload="metadata">
+                                <source src="footballevent.mp4" type="video/mp4" />
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-caption">
+                                Football Tournament <small>Fundraising event for TCF</small>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <h4>05 — Outcome</h4>
-                    <p>Multiple video projects completed for various purposes, with a focus on clarity and professional presentation.</p>
+                    <p>Delivered high-quality video assets that supported TCF's outreach and fundraising initiatives, helping to drive volunteer sign-ups and event participation.</p>
                 </div>
             </div>
         </div>
