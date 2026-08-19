@@ -1066,6 +1066,27 @@
             font-size: 0.75rem;
             margin-top: 2px;
         }
+        /* Error fallback inside video items */
+        .video-error-fallback {
+            background: #fef2f2;
+            color: #991b1b;
+            padding: 16px 18px;
+            text-align: center;
+            border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+            border-top: 1px solid #fecaca;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        .video-error-fallback a {
+            color: var(--color-purple);
+            font-weight: 700;
+            text-decoration: underline;
+            display: inline-block;
+            margin-top: 4px;
+        }
+        .video-error-fallback a:hover {
+            color: var(--color-purple-dark);
+        }
 
         /* ============================================================
            FOOTER
@@ -1880,37 +1901,38 @@
                 <div>
                     <h4>04 — Selected Videos</h4>
                     <div class="modal-video-grid">
-                        <div class="video-item">
+                        <!-- Video 1: bestone -->
+                        <div class="video-item" id="video-bestone">
                             <video controls playsinline preload="metadata">
                                 <source src="bestone.mp4" type="video/mp4" />
-                                Your browser does not support the video tag.
                             </video>
                             <div class="video-caption">
                                 TCF Orientation Session <small>Volunteer recruitment &amp; introduction</small>
                             </div>
+                            <!-- Fallback inserted by JS if needed -->
                         </div>
+                        <!-- Video 2: comingsoon -->
                         <div class="video-item">
                             <video controls playsinline preload="metadata">
                                 <source src="comingsoon.mp4" type="video/mp4" />
-                                Your browser does not support the video tag.
                             </video>
                             <div class="video-caption">
                                 TCF Orientation Peshawar <small>Coming soon — event preview</small>
                             </div>
                         </div>
-                        <div class="video-item">
+                        <!-- Video 3: girlsevent -->
+                        <div class="video-item" id="video-girlsevent">
                             <video controls playsinline preload="metadata">
                                 <source src="girlsevent.mp4" type="video/mp4" />
-                                Your browser does not support the video tag.
                             </video>
                             <div class="video-caption">
                                 Girls-Only Fundraising Event <small>Raising funds for TCF education</small>
                             </div>
                         </div>
+                        <!-- Video 4: footballevent -->
                         <div class="video-item">
                             <video controls playsinline preload="metadata">
                                 <source src="footballevent.mp4" type="video/mp4" />
-                                Your browser does not support the video tag.
                             </video>
                             <div class="video-caption">
                                 Football Tournament <small>Fundraising event for TCF</small>
@@ -2087,6 +2109,44 @@
                         const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
                         window.scrollTo({ top: top, behavior: 'smooth' });
                     }
+                });
+            });
+
+            // ============================================================
+            // VIDEO ERROR FALLBACK (Fixes "bestone" & "girlsevent" issues)
+            // ============================================================
+            document.querySelectorAll('.video-item video').forEach(function(video) {
+                video.addEventListener('error', function() {
+                    // Find the parent .video-item container
+                    const item = this.closest('.video-item');
+                    if (!item) return;
+
+                    // Check if fallback already exists
+                    if (item.querySelector('.video-error-fallback')) return;
+
+                    // Get the video source URL
+                    const src = this.querySelector('source')?.src || this.src || '#';
+
+                    // Create fallback message
+                    const fallback = document.createElement('div');
+                    fallback.className = 'video-error-fallback';
+                    fallback.innerHTML = `
+                            <strong>⚠️ Video playback issue.</strong><br />
+                            The browser couldn't decode this video. 
+                            <a href="${src}" target="_blank" download>⬇️ Download file</a> to view locally.
+                            <br /><small style="color:#6b7280;">(Try converting to H.264/AAC format for better compatibility.)</small>
+                        `;
+
+                    // Insert fallback after the caption
+                    const caption = item.querySelector('.video-caption');
+                    if (caption) {
+                        caption.after(fallback);
+                    } else {
+                        item.appendChild(fallback);
+                    }
+
+                    // Optionally, hide the broken controls
+                    this.style.display = 'none';
                 });
             });
 
