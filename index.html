@@ -35,7 +35,7 @@
             --radius: 16px;
             --radius-sm: 10px;
             --shadow-card: 0 20px 60px -12px rgba(0, 0, 0, 0.08), 0 4px 18px 0 rgba(0, 0, 0, 0.02);
-            --shadow-hover: 0 30px 80px -12px rgba(74, 26, 122, 0.15), 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 30px 80px -12px rgba(74, 26, 122, 0.18), 0 10px 30px -10px rgba(0, 0, 0, 0.05);
             --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             --max-width: 1200px;
@@ -53,6 +53,12 @@
             color: var(--color-text);
             line-height: 1.6;
             overflow-x: hidden;
+            cursor: default;
+        }
+
+        ::selection {
+            background: var(--color-purple);
+            color: #fff;
         }
 
         a {
@@ -104,12 +110,62 @@
         .section-header {
             margin-bottom: 64px;
         }
-
         .section-header.centered {
             text-align: center;
         }
         .section-header.centered .section-subtitle {
             margin: 0 auto;
+        }
+
+        /* ============================================================
+           SCROLL PROGRESS BAR
+        ============================================================ */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--color-purple), var(--color-gold));
+            z-index: 9999;
+            width: 0%;
+            transition: width 0.1s ease-out;
+            box-shadow: 0 0 12px rgba(74, 26, 122, 0.3);
+        }
+
+        /* ============================================================
+           BACK TO TOP
+        ============================================================ */
+        .back-to-top {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 48px;
+            height: 48px;
+            background: var(--color-purple);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 6px 24px rgba(74, 26, 122, 0.3);
+            z-index: 999;
+            opacity: 0;
+            transform: translateY(20px) scale(0.8);
+            transition: var(--transition);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+        .back-to-top:hover {
+            background: var(--color-purple-dark);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 10px 32px rgba(74, 26, 122, 0.4);
         }
 
         /* ============================================================
@@ -195,15 +251,16 @@
             left: 0;
             right: 0;
             height: var(--nav-height);
-            background: rgba(250, 248, 246, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(250, 248, 246, 0.82);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border-bottom: 1px solid rgba(0, 0, 0, 0.04);
             z-index: 1000;
             transition: var(--transition);
         }
         .navbar.scrolled {
             box-shadow: 0 2px 30px rgba(0, 0, 0, 0.06);
+            background: rgba(250, 248, 246, 0.95);
         }
 
         .navbar .container {
@@ -218,9 +275,26 @@
             font-size: 1.2rem;
             letter-spacing: -0.03em;
             color: var(--color-text);
+            position: relative;
         }
         .nav-logo span {
             color: var(--color-purple);
+        }
+        .nav-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--color-purple), var(--color-gold));
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s ease;
+        }
+        .nav-logo:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
         }
 
         .nav-links {
@@ -296,27 +370,35 @@
             position: relative;
             overflow: hidden;
         }
-        .hero::before {
-            content: '';
+
+        .hero-glow {
             position: absolute;
-            top: -30%;
-            right: -15%;
             width: 700px;
             height: 700px;
-            background: radial-gradient(circle, rgba(74, 26, 122, 0.06) 0%, transparent 70%);
             border-radius: 50%;
-            pointer-events: none;
+            background: radial-gradient(circle, rgba(74, 26, 122, 0.08) 0%, transparent 70%);
+            top: -30%;
+            right: -15%;
+            animation: floatGlow 12s ease-in-out infinite alternate;
         }
-        .hero::after {
-            content: '';
+        .hero-glow-2 {
             position: absolute;
-            bottom: -30%;
-            left: -10%;
             width: 500px;
             height: 500px;
-            background: radial-gradient(circle, rgba(201, 168, 76, 0.04) 0%, transparent 70%);
             border-radius: 50%;
-            pointer-events: none;
+            background: radial-gradient(circle, rgba(201, 168, 76, 0.06) 0%, transparent 70%);
+            bottom: -30%;
+            left: -10%;
+            animation: floatGlow 16s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes floatGlow {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                transform: translate(30px, 20px) scale(1.1);
+            }
         }
 
         .hero .container {
@@ -357,8 +439,10 @@
             margin-bottom: 24px;
         }
         .hero h1 .highlight {
-            color: var(--color-purple);
-            position: relative;
+            background: linear-gradient(135deg, var(--color-purple), var(--color-purple-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .hero-lead {
@@ -423,15 +507,17 @@
             flex-direction: column;
             box-shadow: var(--shadow-card);
             will-change: transform;
+            perspective: 800px;
         }
         .project-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-8px) scale(1.01);
             box-shadow: var(--shadow-hover);
-            border-color: rgba(74, 26, 122, 0.12);
+            border-color: rgba(74, 26, 122, 0.15);
         }
 
         .project-card.featured {
             grid-column: 1 / -1;
+            border-left: 3px solid var(--color-gold);
         }
 
         .project-thumb {
@@ -604,7 +690,7 @@
 
         .coordination-gallery {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
         }
         .coordination-gallery .gallery-item {
@@ -622,8 +708,10 @@
             color: var(--color-text-light);
             transition: var(--transition);
             overflow: hidden;
+            position: relative;
         }
-        .coordination-gallery .gallery-item img {
+        .coordination-gallery .gallery-item img,
+        .coordination-gallery .gallery-item video {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -631,8 +719,31 @@
         }
         .coordination-gallery .gallery-item:hover {
             border-color: var(--color-purple);
-            transform: scale(1.02);
-            box-shadow: var(--shadow-card);
+            transform: scale(1.03);
+            box-shadow: var(--shadow-hover);
+            z-index: 2;
+        }
+        .coordination-gallery .gallery-item .play-badge {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: none;
+        }
+        .coordination-gallery .gallery-item .play-badge::before {
+            content: '▶';
+            font-size: 0.6rem;
         }
 
         .lessons-grid {
@@ -783,6 +894,7 @@
             padding: 32px 28px;
             transition: var(--transition);
             box-shadow: var(--shadow-card);
+            text-align: center;
         }
         .principle:hover {
             border-color: rgba(74, 26, 122, 0.15);
@@ -902,9 +1014,9 @@
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             z-index: 2000;
             display: flex;
             align-items: center;
@@ -912,7 +1024,7 @@
             padding: 40px 20px;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.45s ease;
         }
         .modal-overlay.open {
             opacity: 1;
@@ -929,8 +1041,8 @@
             padding: 48px 56px;
             position: relative;
             transform: translateY(30px) scale(0.96);
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.2);
+            transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.25);
         }
         .modal-overlay.open .modal {
             transform: translateY(0) scale(1);
@@ -1066,26 +1178,20 @@
             font-size: 0.75rem;
             margin-top: 2px;
         }
-        /* Error fallback inside video items */
-        .video-error-fallback {
-            background: #fef2f2;
-            color: #991b1b;
-            padding: 16px 18px;
-            text-align: center;
-            border-radius: 0 0 var(--radius-sm) var(--radius-sm);
-            border-top: 1px solid #fecaca;
-            font-size: 0.85rem;
-            line-height: 1.6;
+        /* YouTube Embed Wrapper */
+        .video-embed-wrapper {
+            aspect-ratio: 16 / 9;
+            background: #000;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .video-error-fallback a {
-            color: var(--color-purple);
-            font-weight: 700;
-            text-decoration: underline;
-            display: inline-block;
-            margin-top: 4px;
-        }
-        .video-error-fallback a:hover {
-            color: var(--color-purple-dark);
+        .video-embed-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
         }
 
         /* ============================================================
@@ -1098,6 +1204,23 @@
             color: rgba(255, 255, 255, 0.25);
             font-size: 0.85rem;
             text-align: center;
+        }
+        .footer a {
+            color: rgba(255, 255, 255, 0.4);
+            transition: var(--transition);
+        }
+        .footer a:hover {
+            color: var(--color-white);
+        }
+        .footer .footer-social {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+        .footer .footer-social a {
+            font-size: 0.9rem;
+            font-weight: 500;
         }
 
         /* ============================================================
@@ -1142,6 +1265,9 @@
             }
             .section-padding {
                 padding: 80px 0;
+            }
+            .coordination-gallery {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -1188,6 +1314,7 @@
             }
             .coordination-gallery {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
             }
 
             .skills-grid {
@@ -1221,6 +1348,13 @@
             .modal-video-grid {
                 grid-template-columns: 1fr;
             }
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 42px;
+                height: 42px;
+                font-size: 1.2rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1236,13 +1370,15 @@
             }
             .hero-social {
                 justify-content: center;
+                flex-wrap: wrap;
+                gap: 12px;
             }
             .project-body {
                 padding: 24px 20px 28px;
             }
             .coordination-gallery {
                 grid-template-columns: 1fr 1fr;
-                gap: 12px;
+                gap: 10px;
             }
             .skills-grid {
                 grid-template-columns: 1fr;
@@ -1271,14 +1407,35 @@
             transform: translateY(0);
         }
 
-        .reveal:nth-child(2) {
+        .coordination-gallery .gallery-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.3s, box-shadow 0.3s;
+        }
+        .coordination-gallery .gallery-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .coordination-gallery .gallery-item:nth-child(1) {
+            transition-delay: 0.05s;
+        }
+        .coordination-gallery .gallery-item:nth-child(2) {
             transition-delay: 0.1s;
         }
-        .reveal:nth-child(3) {
+        .coordination-gallery .gallery-item:nth-child(3) {
+            transition-delay: 0.15s;
+        }
+        .coordination-gallery .gallery-item:nth-child(4) {
             transition-delay: 0.2s;
         }
-        .reveal:nth-child(4) {
+        .coordination-gallery .gallery-item:nth-child(5) {
+            transition-delay: 0.25s;
+        }
+        .coordination-gallery .gallery-item:nth-child(6) {
             transition-delay: 0.3s;
+        }
+        .coordination-gallery .gallery-item:nth-child(7) {
+            transition-delay: 0.35s;
         }
 
         /* ============================================================
@@ -1299,6 +1456,12 @@
     </style>
 </head>
 <body>
+
+    <!-- SCROLL PROGRESS BAR -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- BACK TO TOP -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
 
     <!-- ============================================================
     NAVIGATION
@@ -1324,6 +1487,8 @@
     HERO
     ============================================================ -->
     <section class="hero" id="hero">
+        <div class="hero-glow"></div>
+        <div class="hero-glow-2"></div>
         <div class="container">
             <div class="hero-content">
                 <div class="hero-badge">Building &amp; Coordinating</div>
@@ -1452,7 +1617,7 @@
                         <span class="project-category">Creative Production · Video Editing</span>
                         <h3 class="project-name">Video Editing</h3>
                         <p class="project-desc">
-                            Video editing for TCF fundraising campaigns, including orientation sessions, volunteer recruitment, girls-only events, and football tournaments.
+                            Video editing for TCF fundraising campaigns, including independence day celebrations, orientation sessions, volunteer recruitment, girls-only events, and football tournaments.
                         </p>
                         <p class="project-role"><strong>My role:</strong> Video editing, post-production, creative direction, and visual storytelling for TCF events.</p>
                         <div class="project-tech">
@@ -1527,13 +1692,40 @@
                     <button class="btn btn-outline mt-24" data-modal="ctrlfuture">View Full Case Study →</button>
                 </div>
 
-                <div class="coordination-gallery reveal">
-                    <div class="gallery-item"><img src="WhatsApp%20Image%202026-07-28%20at%2011.56.55%20PM.jpeg" alt="CTRL+FUTURE speaker poster - Flutter App Development with Talha Ali" /></div>
-                    <div class="gallery-item"><img src="WhatsApp%20Image%202026-07-28%20at%2011.59.14%20PM.jpeg" alt="CTRL+FUTURE speaker poster - Web Development with Syed Muhammad Moiz" /></div>
-                    <div class="gallery-item"><img src="WhatsApp%20Image%202026-07-28%20at%2011.58.22%20PM.jpeg" alt="CTRL+FUTURE speaker poster - Personal Branding & LinkedIn with Muhammad Usman Ali" /></div>
-                    <div class="gallery-item"><img src="WhatsApp%20Image%202026-07-28%20at%2011.59.55%20PM.jpeg" alt="CTRL+FUTURE speaker poster - Graphic Design & Branding with Abdul Mateen" /></div>
-                    <div class="gallery-item" style="background:var(--color-purple-dark);color:var(--color-white);font-weight:600;">CTRL+FUTURE<br><small style="font-weight:400;opacity:0.7;">Event Branding</small></div>
-                    <div class="gallery-item" style="background:var(--color-purple-dark);color:var(--color-white);font-weight:600;">CTRL+FUTURE<br><small style="font-weight:400;opacity:0.7;">Promotional Asset</small></div>
+                <!-- UPDATED GALLERY with new assets -->
+                <div class="coordination-gallery">
+                    <!-- 1. Promo Video (event1.mp4) -->
+                    <div class="gallery-item" style="padding:0; background:#0a080c;">
+                        <video controls playsinline preload="metadata" style="width:100%; height:100%; object-fit:cover;">
+                            <source src="event1.mp4" type="video/mp4" />
+                            Your browser does not support the video tag.
+                        </video>
+                        <span class="play-badge">Promo</span>
+                    </div>
+                    <!-- 2. Poster 1 -->
+                    <div class="gallery-item" style="padding:0;">
+                        <img src="poster1.jpeg" alt="CTRL+FUTURE promotional poster 1" loading="lazy" />
+                    </div>
+                    <!-- 3. Poster 2 -->
+                    <div class="gallery-item" style="padding:0;">
+                        <img src="poster2.jpeg" alt="CTRL+FUTURE promotional poster 2" loading="lazy" />
+                    </div>
+                    <!-- 4. Speaker: Talha Ali (Flutter) -->
+                    <div class="gallery-item" style="padding:0;">
+                        <img src="WhatsApp%20Image%202026-07-28%20at%2011.56.55%20PM.jpeg" alt="CTRL+FUTURE speaker poster - Flutter App Development with Talha Ali" loading="lazy" />
+                    </div>
+                    <!-- 5. Speaker: Syed Muhammad Moiz (Web Dev) -->
+                    <div class="gallery-item" style="padding:0;">
+                        <img src="WhatsApp%20Image%202026-07-28%20at%2011.59.14%20PM.jpeg" alt="CTRL+FUTURE speaker poster - Web Development with Syed Muhammad Moiz" loading="lazy" />
+                    </div>
+                    <!-- 6. Speaker: Muhammad Usman Ali (Personal Branding) -->
+                    <div class="gallery-item" style="padding:0;">
+                        <img src="WhatsApp%20Image%202026-07-28%20at%2011.58.22%20PM.jpeg" alt="CTRL+FUTURE speaker poster - Personal Branding & LinkedIn with Muhammad Usman Ali" loading="lazy" />
+                    </div>
+                    <!-- 7. Speaker: Abdul Mateen (Graphic Design) -->
+                    <div class="gallery-item" style="padding:0;">
+                        <img src="WhatsApp%20Image%202026-07-28%20at%2011.59.55%20PM.jpeg" alt="CTRL+FUTURE speaker poster - Graphic Design & Branding with Abdul Mateen" loading="lazy" />
+                    </div>
                 </div>
 
             </div>
@@ -1754,6 +1946,11 @@
     ============================================================ -->
     <footer class="footer">
         <div class="container">
+            <div class="footer-social">
+                <a href="https://www.linkedin.com/in/maira-khan-2936b93aa/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://github.com/mairakhan-dev" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="mailto:mairakhan.contact@gmail.com">Email</a>
+            </div>
             <p>&copy; 2026 Maira Khan. Built with purpose.</p>
         </div>
     </footer>
@@ -1878,7 +2075,7 @@
         </div>
     </div>
 
-    <!-- MODAL: Video Editing (4 TCF Videos) -->
+    <!-- MODAL: Video Editing -->
     <div class="modal-overlay" id="modal-videoedit" role="dialog" aria-modal="true" aria-labelledby="modal-videoedit-title">
         <div class="modal">
             <button class="modal-close" data-close aria-label="Close case study">&times;</button>
@@ -1888,7 +2085,7 @@
             <div class="modal-body">
                 <div>
                     <h4>01 — Overview</h4>
-                    <p>Video editing for TCF (The Citizens Foundation) fundraising campaigns and events, including orientation sessions, volunteer recruitment, girls-only events, and football tournaments.</p>
+                    <p>Video editing for TCF (The Citizens Foundation) fundraising campaigns and events, including independence day celebrations, orientation sessions, volunteer recruitment, girls-only events, and football tournaments.</p>
                 </div>
                 <div>
                     <h4>02 — Goal</h4>
@@ -1901,38 +2098,49 @@
                 <div>
                     <h4>04 — Selected Videos</h4>
                     <div class="modal-video-grid">
-                        <!-- Video 1: bestone -->
-                        <div class="video-item" id="video-bestone">
+                        <!-- 1. tcfvid (Long-form Independence Day) -->
+                        <div class="video-item">
                             <video controls playsinline preload="metadata">
-                                <source src="bestone.mp4" type="video/mp4" />
+                                <source src="tcfvid.mp4" type="video/mp4" />
+                                Your browser does not support the video tag.
                             </video>
+                            <div class="video-caption">
+                                TCF Independence Day Celebrations <small>Long-form coverage of 14th August events</small>
+                            </div>
+                        </div>
+                        <!-- 2. bestone (YouTube Embed) -->
+                        <div class="video-item">
+                            <div class="video-embed-wrapper">
+                                <iframe src="https://www.youtube.com/embed/u479GHfHLPg" frameborder="0" allowfullscreen loading="lazy"></iframe>
+                            </div>
                             <div class="video-caption">
                                 TCF Orientation Session <small>Volunteer recruitment &amp; introduction</small>
                             </div>
-                            <!-- Fallback inserted by JS if needed -->
                         </div>
-                        <!-- Video 2: comingsoon -->
+                        <!-- 3. comingsoon -->
                         <div class="video-item">
                             <video controls playsinline preload="metadata">
                                 <source src="comingsoon.mp4" type="video/mp4" />
+                                Your browser does not support the video tag.
                             </video>
                             <div class="video-caption">
                                 TCF Orientation Peshawar <small>Coming soon — event preview</small>
                             </div>
                         </div>
-                        <!-- Video 3: girlsevent -->
-                        <div class="video-item" id="video-girlsevent">
-                            <video controls playsinline preload="metadata">
-                                <source src="girlsevent.mp4" type="video/mp4" />
-                            </video>
+                        <!-- 4. girlsevent (YouTube Shorts Embed) -->
+                        <div class="video-item">
+                            <div class="video-embed-wrapper">
+                                <iframe src="https://www.youtube.com/embed/l2SrlsPNZIQ" frameborder="0" allowfullscreen loading="lazy"></iframe>
+                            </div>
                             <div class="video-caption">
                                 Girls-Only Fundraising Event <small>Raising funds for TCF education</small>
                             </div>
                         </div>
-                        <!-- Video 4: footballevent -->
+                        <!-- 5. footballevent -->
                         <div class="video-item">
                             <video controls playsinline preload="metadata">
                                 <source src="footballevent.mp4" type="video/mp4" />
+                                Your browser does not support the video tag.
                             </video>
                             <div class="video-caption">
                                 Football Tournament <small>Fundraising event for TCF</small>
@@ -2005,6 +2213,28 @@
         (function() {
             'use strict';
 
+            // ---- SCROLL PROGRESS ----
+            const progressBar = document.getElementById('scrollProgress');
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = (scrollTop / docHeight) * 100;
+                progressBar.style.width = progress + '%';
+            });
+
+            // ---- BACK TO TOP ----
+            const backBtn = document.getElementById('backToTop');
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 400) {
+                    backBtn.classList.add('visible');
+                } else {
+                    backBtn.classList.remove('visible');
+                }
+            });
+            backBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
             // ---- NAV TOGGLE ----
             const navToggle = document.getElementById('navToggle');
             const navLinks = document.getElementById('navLinks');
@@ -2033,7 +2263,7 @@
                 }
             });
 
-            // ---- SCROLL REVEAL ----
+            // ---- SCROLL REVEAL (General) ----
             const reveals = document.querySelectorAll('.reveal');
             const observer = new IntersectionObserver(function(entries) {
                 entries.forEach(function(entry) {
@@ -2047,6 +2277,22 @@
             });
             reveals.forEach(function(el) {
                 observer.observe(el);
+            });
+
+            // ---- SCROLL REVEAL (Coordination Gallery) ----
+            const galleryItems = document.querySelectorAll('.coordination-gallery .gallery-item');
+            const galleryObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -40px 0px'
+            });
+            galleryItems.forEach(function(item) {
+                galleryObserver.observe(item);
             });
 
             // ---- MODALS ----
@@ -2112,40 +2358,24 @@
                 });
             });
 
-            // ============================================================
-            // VIDEO ERROR FALLBACK (Fixes "bestone" & "girlsevent" issues)
-            // ============================================================
+            // ---- VIDEO ERROR FALLBACK (Local videos) ----
             document.querySelectorAll('.video-item video').forEach(function(video) {
                 video.addEventListener('error', function() {
-                    // Find the parent .video-item container
                     const item = this.closest('.video-item');
                     if (!item) return;
-
-                    // Check if fallback already exists
                     if (item.querySelector('.video-error-fallback')) return;
-
-                    // Get the video source URL
                     const src = this.querySelector('source')?.src || this.src || '#';
-
-                    // Create fallback message
                     const fallback = document.createElement('div');
                     fallback.className = 'video-error-fallback';
+                    fallback.style.cssText =
+                        'background:#fef2f2;color:#991b1b;padding:12px 16px;text-align:center;border-top:1px solid #fecaca;font-size:0.85rem;';
                     fallback.innerHTML = `
-                            <strong>⚠️ Video playback issue.</strong><br />
-                            The browser couldn't decode this video. 
-                            <a href="${src}" target="_blank" download>⬇️ Download file</a> to view locally.
-                            <br /><small style="color:#6b7280;">(Try converting to H.264/AAC format for better compatibility.)</small>
+                            <strong>⚠️ Playback issue.</strong> 
+                            <a href="${src}" target="_blank" download style="color:#4a1a7a;font-weight:700;text-decoration:underline;">⬇️ Download</a>
                         `;
-
-                    // Insert fallback after the caption
                     const caption = item.querySelector('.video-caption');
-                    if (caption) {
-                        caption.after(fallback);
-                    } else {
-                        item.appendChild(fallback);
-                    }
-
-                    // Optionally, hide the broken controls
+                    if (caption) caption.after(fallback);
+                    else item.appendChild(fallback);
                     this.style.display = 'none';
                 });
             });
