@@ -118,6 +118,46 @@
         }
 
         /* ============================================================
+           LOADING SCREEN
+        ============================================================ */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: var(--color-bg-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 24px;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        #loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loader-ring {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 255, 255, 0.05);
+            border-top-color: var(--color-gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .loader-text {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+
+        /* ============================================================
            SCROLL PROGRESS BAR
         ============================================================ */
         .scroll-progress {
@@ -139,8 +179,8 @@
             position: fixed;
             bottom: 32px;
             right: 32px;
-            width: 48px;
-            height: 48px;
+            width: 52px;
+            height: 52px;
             background: var(--color-purple);
             color: #fff;
             border: none;
@@ -167,6 +207,11 @@
             transform: translateY(-4px) scale(1.05);
             box-shadow: 0 10px 32px rgba(74, 26, 122, 0.4);
         }
+        .back-to-top .progress-ring {
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+        }
 
         /* ============================================================
            BUTTONS
@@ -187,6 +232,19 @@
             background: var(--color-purple);
             color: var(--color-white);
             box-shadow: 0 4px 14px rgba(74, 26, 122, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .btn:hover::after {
+            opacity: 1;
         }
         .btn:hover {
             background: var(--color-purple-dark);
@@ -199,6 +257,9 @@
             color: var(--color-text);
             border: 1.5px solid var(--color-border);
             box-shadow: none;
+        }
+        .btn-outline::after {
+            display: none;
         }
         .btn-outline:hover {
             background: var(--color-text);
@@ -243,6 +304,34 @@
         }
 
         /* ============================================================
+           CUSTOM CURSOR
+        ============================================================ */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--color-purple);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 99999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background 0.2s;
+            mix-blend-mode: difference;
+        }
+        .cursor-dot.hover {
+            width: 40px;
+            height: 40px;
+            background: var(--color-gold);
+            mix-blend-mode: normal;
+            opacity: 0.2;
+        }
+        @media (pointer: coarse) {
+            .cursor-dot {
+                display: none;
+            }
+        }
+
+        /* ============================================================
            NAVIGATION
         ============================================================ */
         .navbar {
@@ -278,7 +367,10 @@
             position: relative;
         }
         .nav-logo span {
-            color: var(--color-purple);
+            background: linear-gradient(135deg, var(--color-purple), var(--color-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         .nav-logo::after {
             content: '';
@@ -401,6 +493,14 @@
             }
         }
 
+        /* Particle background */
+        #particles-canvas {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
         .hero .container {
             position: relative;
             z-index: 1;
@@ -439,7 +539,7 @@
             margin-bottom: 24px;
         }
         .hero h1 .highlight {
-            background: linear-gradient(135deg, var(--color-purple), var(--color-purple-light));
+            background: linear-gradient(135deg, var(--color-purple), var(--color-gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -451,6 +551,25 @@
             color: var(--color-text-light);
             margin-bottom: 12px;
             line-height: 1.5;
+            min-height: 2.5rem;
+        }
+        .hero-lead .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background: var(--color-purple);
+            margin-left: 2px;
+            vertical-align: text-bottom;
+            animation: blink 0.8s step-end infinite;
+        }
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
         }
 
         .hero-desc {
@@ -507,7 +626,25 @@
             flex-direction: column;
             box-shadow: var(--shadow-card);
             will-change: transform;
-            perspective: 800px;
+            position: relative;
+        }
+        .project-card::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: var(--radius);
+            background: linear-gradient(135deg, rgba(74, 26, 122, 0.1), rgba(201, 168, 76, 0.1));
+            opacity: 0;
+            transition: opacity 0.6s;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .project-card:hover::before {
+            opacity: 1;
+        }
+        .project-card>* {
+            position: relative;
+            z-index: 1;
         }
         .project-card:hover {
             transform: translateY(-8px) scale(1.01);
@@ -617,6 +754,11 @@
             border-radius: 50px;
             color: var(--color-text-light);
             border: 1px solid var(--color-border);
+            transition: var(--transition);
+        }
+        .project-tech span:hover {
+            border-color: var(--color-purple);
+            color: var(--color-purple);
         }
 
         .project-actions {
@@ -709,6 +851,7 @@
             transition: var(--transition);
             overflow: hidden;
             position: relative;
+            cursor: pointer;
         }
         .coordination-gallery .gallery-item img,
         .coordination-gallery .gallery-item video {
@@ -740,10 +883,40 @@
             align-items: center;
             gap: 8px;
             pointer-events: none;
+            transition: var(--transition);
+        }
+        .coordination-gallery .gallery-item:hover .play-badge {
+            background: rgba(74, 26, 122, 0.8);
+            transform: translate(-50%, -50%) scale(1.05);
         }
         .coordination-gallery .gallery-item .play-badge::before {
             content: '▶';
             font-size: 0.6rem;
+        }
+        .coordination-gallery .gallery-item .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(74, 26, 122, 0.3), rgba(201, 168, 76, 0.2));
+            opacity: 0;
+            transition: opacity 0.4s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+        .coordination-gallery .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        .coordination-gallery .gallery-item .gallery-overlay span {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
         .lessons-grid {
@@ -768,6 +941,146 @@
         }
 
         /* ============================================================
+           LIGHTBOX
+        ============================================================ */
+        .lightbox-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            padding: 40px 20px;
+        }
+        .lightbox-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .lightbox-content {
+            max-width: 90vw;
+            max-height: 85vh;
+            position: relative;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox-overlay.open .lightbox-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .lightbox-content img,
+        .lightbox-content video,
+        .lightbox-content iframe {
+            max-width: 100%;
+            max-height: 85vh;
+            border-radius: var(--radius);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+            background: #000;
+        }
+        .lightbox-content iframe {
+            aspect-ratio: 16 / 9;
+            width: 100%;
+            max-width: 800px;
+            border: none;
+        }
+        .lightbox-content iframe.short {
+            aspect-ratio: 9 / 16;
+            max-width: 400px;
+        }
+
+        .lightbox-close {
+            position: fixed;
+            top: 24px;
+            right: 32px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 2.4rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 10001;
+            line-height: 1;
+        }
+        .lightbox-close:hover {
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        .lightbox-nav {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox-nav:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-50%) scale(1.05);
+        }
+        .lightbox-nav.prev {
+            left: 24px;
+        }
+        .lightbox-nav.next {
+            right: 24px;
+        }
+        .lightbox-nav.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        @media (max-width: 768px) {
+            .lightbox-nav {
+                width: 36px;
+                height: 36px;
+                font-size: 0.9rem;
+            }
+            .lightbox-nav.prev {
+                left: 8px;
+            }
+            .lightbox-nav.next {
+                right: 8px;
+            }
+            .lightbox-close {
+                top: 12px;
+                right: 16px;
+                font-size: 1.8rem;
+            }
+            .lightbox-content iframe {
+                max-width: 100%;
+            }
+            .lightbox-content iframe.short {
+                max-width: 280px;
+            }
+        }
+        @media (pointer: coarse) {
+            .lightbox-nav {
+                width: 44px;
+                height: 44px;
+            }
+        }
+
+        /* ============================================================
            COLLABORATIONS
         ============================================================ */
         .collab-card {
@@ -778,6 +1091,18 @@
             max-width: 680px;
             transition: var(--transition);
             box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+        .collab-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(74, 26, 122, 0.03), transparent);
+            pointer-events: none;
         }
         .collab-card:hover {
             border-color: rgba(74, 26, 122, 0.15);
@@ -829,6 +1154,23 @@
             flex-direction: column;
             gap: 8px;
             box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+        .outreach-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--color-purple), var(--color-gold));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s;
+        }
+        .outreach-card:hover::after {
+            transform: scaleX(1);
         }
         .outreach-card:hover {
             border-color: rgba(74, 26, 122, 0.15);
@@ -860,6 +1202,19 @@
             grid-template-columns: repeat(4, 1fr);
             gap: 40px;
         }
+        .skill-group {
+            background: var(--color-white);
+            border-radius: var(--radius-sm);
+            padding: 28px 24px;
+            border: 1px solid var(--color-border);
+            transition: var(--transition);
+            box-shadow: var(--shadow-card);
+        }
+        .skill-group:hover {
+            border-color: rgba(74, 26, 122, 0.15);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
         .skill-group h4 {
             font-size: 0.7rem;
             font-weight: 700;
@@ -877,6 +1232,46 @@
             color: var(--color-text-light);
             padding: 4px 0;
             line-height: 1.6;
+            transition: var(--transition);
+        }
+        .skill-group ul li:hover {
+            color: var(--color-text);
+            padding-left: 8px;
+        }
+
+        /* Counter numbers */
+        .counter-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        .counter-item {
+            background: var(--color-white);
+            border-radius: var(--radius-sm);
+            padding: 32px 20px;
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-card);
+            transition: var(--transition);
+        }
+        .counter-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+        .counter-item .number {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--color-purple), var(--color-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .counter-item .label {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            font-weight: 500;
+            margin-top: 4px;
         }
 
         /* ============================================================
@@ -895,6 +1290,23 @@
             transition: var(--transition);
             box-shadow: var(--shadow-card);
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .principle::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--color-purple), var(--color-gold));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s;
+        }
+        .principle:hover::before {
+            transform: scaleX(1);
         }
         .principle:hover {
             border-color: rgba(74, 26, 122, 0.15);
@@ -938,6 +1350,22 @@
             gap: 4px;
             box-shadow: var(--shadow-card);
             transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .current-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--color-purple), var(--color-gold));
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .current-item:hover::before {
+            opacity: 1;
         }
         .current-item:hover {
             transform: translateY(-4px);
@@ -969,6 +1397,19 @@
             background: var(--color-bg-dark);
             color: var(--color-white);
             padding: 120px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .contact-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(74, 26, 122, 0.1), transparent);
+            border-radius: 50%;
+            pointer-events: none;
         }
         .contact-section .section-title {
             color: var(--color-white);
@@ -985,6 +1426,8 @@
             flex-direction: column;
             align-items: flex-start;
             gap: 32px;
+            position: relative;
+            z-index: 1;
         }
         .contact-inner p {
             font-size: 1.05rem;
@@ -1009,7 +1452,7 @@
         }
 
         /* ============================================================
-           MODALS
+           MODALS (Case Studies)
         ============================================================ */
         .modal-overlay {
             position: fixed;
@@ -1178,7 +1621,6 @@
             font-size: 0.75rem;
             margin-top: 2px;
         }
-        /* YouTube Embed Wrapper */
         .video-embed-wrapper {
             aspect-ratio: 16 / 9;
             background: #000;
@@ -1222,6 +1664,11 @@
             font-size: 0.9rem;
             font-weight: 500;
         }
+        .footer .footer-time {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.2);
+            margin-top: 8px;
+        }
 
         /* ============================================================
            RESPONSIVE
@@ -1242,6 +1689,9 @@
             }
             .coordination-gallery {
                 grid-template-columns: repeat(3, 1fr);
+            }
+            .counter-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -1355,6 +1805,13 @@
                 height: 42px;
                 font-size: 1.2rem;
             }
+            .counter-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+            .counter-item .number {
+                font-size: 2rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1391,6 +1848,9 @@
             }
             .collab-card {
                 padding: 24px 20px;
+            }
+            .counter-grid {
+                grid-template-columns: 1fr 1fr;
             }
         }
 
@@ -1457,11 +1917,27 @@
 </head>
 <body>
 
+    <!-- LOADING SCREEN -->
+    <div id="loader">
+        <div class="loader-ring"></div>
+        <div class="loader-text">Loading</div>
+    </div>
+
     <!-- SCROLL PROGRESS BAR -->
     <div class="scroll-progress" id="scrollProgress"></div>
 
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot" id="cursorDot"></div>
+
     <!-- BACK TO TOP -->
-    <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        ↑
+        <svg class="progress-ring" viewBox="0 0 60 60">
+            <circle cx="30" cy="30" r="26" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+            <circle cx="30" cy="30" r="26" fill="none" stroke="var(--color-gold)" stroke-width="2"
+            stroke-dasharray="163.36" stroke-dashoffset="163.36" id="progressCircle"/>
+        </svg>
+    </button>
 
     <!-- ============================================================
     NAVIGATION
@@ -1487,6 +1963,7 @@
     HERO
     ============================================================ -->
     <section class="hero" id="hero">
+        <canvas id="particles-canvas"></canvas>
         <div class="hero-glow"></div>
         <div class="hero-glow-2"></div>
         <div class="container">
@@ -1495,7 +1972,9 @@
                 <h1>
                     Maira <span class="highlight">Khan</span>
                 </h1>
-                <p class="hero-lead">Building, coordinating, and shipping real digital projects.</p>
+                <p class="hero-lead" id="typingText">
+                    <span id="typedOutput"></span><span class="typing-cursor"></span>
+                </p>
                 <p class="hero-desc">
                     I work across web development, AI projects, creative production, and project coordination —
                     turning ideas into working products and organized initiatives.
@@ -1692,39 +2171,45 @@
                     <button class="btn btn-outline mt-24" data-modal="ctrlfuture">View Full Case Study →</button>
                 </div>
 
-                <!-- UPDATED GALLERY with new assets -->
+                <!-- GALLERY with Lightbox support -->
                 <div class="coordination-gallery">
-                    <!-- 1. Promo Video (event1.mp4) -->
-                    <div class="gallery-item" style="padding:0; background:#0a080c;">
-                        <video controls playsinline preload="metadata" style="width:100%; height:100%; object-fit:cover;">
-                            <source src="event1.mp4" type="video/mp4" />
-                            Your browser does not support the video tag.
-                        </video>
-                        <span class="play-badge">Promo</span>
+                    <!-- 1. Promo Video (YouTube Shorts) -->
+                    <div class="gallery-item" style="padding:0; background:#0a080c;" data-type="youtube" data-url="https://www.youtube.com/embed/oBCzTCgvktI" data-short="true">
+                        <div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0a080c;">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Crect width='100%25' height='100%25' fill='%231a1428'/%3E%3Ctext x='50%25' y='45%25' font-family='Inter' font-size='14' fill='%238a8690' text-anchor='middle'%3EPromo Video%3C/text%3E%3Ctext x='50%25' y='60%25' font-family='Inter' font-size='10' fill='%235a5660' text-anchor='middle'%3EClick to play%3C/text%3E%3C/svg%3E" alt="CTRL+FUTURE Promo Video" style="width:100%;height:100%;object-fit:cover;" />
+                            <span class="play-badge">Watch</span>
+                            <div class="gallery-overlay"><span>▶ Play Video</span></div>
+                        </div>
                     </div>
                     <!-- 2. Poster 1 -->
-                    <div class="gallery-item" style="padding:0;">
+                    <div class="gallery-item" style="padding:0;" data-type="image" data-url="poster1.jpeg">
                         <img src="poster1.jpeg" alt="CTRL+FUTURE promotional poster 1" loading="lazy" />
+                        <div class="gallery-overlay"><span>🔍 View</span></div>
                     </div>
                     <!-- 3. Poster 2 -->
-                    <div class="gallery-item" style="padding:0;">
+                    <div class="gallery-item" style="padding:0;" data-type="image" data-url="poster2.jpeg">
                         <img src="poster2.jpeg" alt="CTRL+FUTURE promotional poster 2" loading="lazy" />
+                        <div class="gallery-overlay"><span>🔍 View</span></div>
                     </div>
                     <!-- 4. Speaker: Talha Ali (Flutter) -->
-                    <div class="gallery-item" style="padding:0;">
+                    <div class="gallery-item" style="padding:0;" data-type="image" data-url="WhatsApp%20Image%202026-07-28%20at%2011.56.55%20PM.jpeg">
                         <img src="WhatsApp%20Image%202026-07-28%20at%2011.56.55%20PM.jpeg" alt="CTRL+FUTURE speaker poster - Flutter App Development with Talha Ali" loading="lazy" />
+                        <div class="gallery-overlay"><span>🔍 View</span></div>
                     </div>
                     <!-- 5. Speaker: Syed Muhammad Moiz (Web Dev) -->
-                    <div class="gallery-item" style="padding:0;">
+                    <div class="gallery-item" style="padding:0;" data-type="image" data-url="WhatsApp%20Image%202026-07-28%20at%2011.59.14%20PM.jpeg">
                         <img src="WhatsApp%20Image%202026-07-28%20at%2011.59.14%20PM.jpeg" alt="CTRL+FUTURE speaker poster - Web Development with Syed Muhammad Moiz" loading="lazy" />
+                        <div class="gallery-overlay"><span>🔍 View</span></div>
                     </div>
                     <!-- 6. Speaker: Muhammad Usman Ali (Personal Branding) -->
-                    <div class="gallery-item" style="padding:0;">
+                    <div class="gallery-item" style="padding:0;" data-type="image" data-url="WhatsApp%20Image%202026-07-28%20at%2011.58.22%20PM.jpeg">
                         <img src="WhatsApp%20Image%202026-07-28%20at%2011.58.22%20PM.jpeg" alt="CTRL+FUTURE speaker poster - Personal Branding & LinkedIn with Muhammad Usman Ali" loading="lazy" />
+                        <div class="gallery-overlay"><span>🔍 View</span></div>
                     </div>
                     <!-- 7. Speaker: Abdul Mateen (Graphic Design) -->
-                    <div class="gallery-item" style="padding:0;">
+                    <div class="gallery-item" style="padding:0;" data-type="image" data-url="WhatsApp%20Image%202026-07-28%20at%2011.59.55%20PM.jpeg">
                         <img src="WhatsApp%20Image%202026-07-28%20at%2011.59.55%20PM.jpeg" alt="CTRL+FUTURE speaker poster - Graphic Design & Branding with Abdul Mateen" loading="lazy" />
+                        <div class="gallery-overlay"><span>🔍 View</span></div>
                     </div>
                 </div>
 
@@ -1850,6 +2335,26 @@
                     </ul>
                 </div>
             </div>
+
+            <!-- Animated Counters -->
+            <div class="counter-grid reveal">
+                <div class="counter-item">
+                    <div class="number" data-count="4">0</div>
+                    <div class="label">Projects Built</div>
+                </div>
+                <div class="counter-item">
+                    <div class="number" data-count="7">0</div>
+                    <div class="label">Speakers Coordinated</div>
+                </div>
+                <div class="counter-item">
+                    <div class="number" data-count="5">0</div>
+                    <div class="label">Video Projects</div>
+                </div>
+                <div class="counter-item">
+                    <div class="number" data-count="3">0</div>
+                    <div class="label">Active Collaborations</div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -1952,11 +2457,22 @@
                 <a href="mailto:mairakhan.contact@gmail.com">Email</a>
             </div>
             <p>&copy; 2026 Maira Khan. Built with purpose.</p>
+            <p class="footer-time" id="footerTime"></p>
         </div>
     </footer>
 
     <!-- ============================================================
-    MODALS
+    LIGHTBOX
+    ============================================================ -->
+    <div class="lightbox-overlay" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose">✕</button>
+        <button class="lightbox-nav prev" id="lightboxPrev">‹</button>
+        <button class="lightbox-nav next" id="lightboxNext">›</button>
+        <div class="lightbox-content" id="lightboxContent"></div>
+    </div>
+
+    <!-- ============================================================
+    MODALS (Case Studies)
     ============================================================ -->
 
     <!-- MODAL: GrindlyLearn -->
@@ -2098,7 +2614,6 @@
                 <div>
                     <h4>04 — Selected Videos</h4>
                     <div class="modal-video-grid">
-                        <!-- 1. tcfvid (Long-form Independence Day) -->
                         <div class="video-item">
                             <video controls playsinline preload="metadata">
                                 <source src="tcfvid.mp4" type="video/mp4" />
@@ -2108,7 +2623,6 @@
                                 TCF Independence Day Celebrations <small>Long-form coverage of 14th August events</small>
                             </div>
                         </div>
-                        <!-- 2. bestone (YouTube Embed) -->
                         <div class="video-item">
                             <div class="video-embed-wrapper">
                                 <iframe src="https://www.youtube.com/embed/u479GHfHLPg" frameborder="0" allowfullscreen loading="lazy"></iframe>
@@ -2117,7 +2631,6 @@
                                 TCF Orientation Session <small>Volunteer recruitment &amp; introduction</small>
                             </div>
                         </div>
-                        <!-- 3. comingsoon -->
                         <div class="video-item">
                             <video controls playsinline preload="metadata">
                                 <source src="comingsoon.mp4" type="video/mp4" />
@@ -2127,7 +2640,6 @@
                                 TCF Orientation Peshawar <small>Coming soon — event preview</small>
                             </div>
                         </div>
-                        <!-- 4. girlsevent (YouTube Shorts Embed) -->
                         <div class="video-item">
                             <div class="video-embed-wrapper">
                                 <iframe src="https://www.youtube.com/embed/l2SrlsPNZIQ" frameborder="0" allowfullscreen loading="lazy"></iframe>
@@ -2136,7 +2648,6 @@
                                 Girls-Only Fundraising Event <small>Raising funds for TCF education</small>
                             </div>
                         </div>
-                        <!-- 5. footballevent -->
                         <div class="video-item">
                             <video controls playsinline preload="metadata">
                                 <source src="footballevent.mp4" type="video/mp4" />
@@ -2213,16 +2724,35 @@
         (function() {
             'use strict';
 
-            // ---- SCROLL PROGRESS ----
+            // ============================================================
+            // LOADING SCREEN
+            // ============================================================
+            window.addEventListener('load', function() {
+                document.getElementById('loader').classList.add('hidden');
+            });
+
+            // ============================================================
+            // SCROLL PROGRESS
+            // ============================================================
             const progressBar = document.getElementById('scrollProgress');
             window.addEventListener('scroll', function() {
                 const scrollTop = window.pageYOffset;
                 const docHeight = document.documentElement.scrollHeight - window.innerHeight;
                 const progress = (scrollTop / docHeight) * 100;
                 progressBar.style.width = progress + '%';
+
+                // Back to top ring
+                const circle = document.getElementById('progressCircle');
+                if (circle) {
+                    const circumference = 163.36;
+                    const offset = circumference - (progress / 100) * circumference;
+                    circle.style.strokeDashoffset = offset;
+                }
             });
 
-            // ---- BACK TO TOP ----
+            // ============================================================
+            // BACK TO TOP
+            // ============================================================
             const backBtn = document.getElementById('backToTop');
             window.addEventListener('scroll', function() {
                 if (window.pageYOffset > 400) {
@@ -2235,7 +2765,95 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
-            // ---- NAV TOGGLE ----
+            // ============================================================
+            // CUSTOM CURSOR
+            // ============================================================
+            const cursor = document.getElementById('cursorDot');
+            if (window.matchMedia('(pointer: fine)').matches) {
+                document.addEventListener('mousemove', function(e) {
+                    cursor.style.left = e.clientX + 'px';
+                    cursor.style.top = e.clientY + 'px';
+                });
+                document.querySelectorAll('a, button, .gallery-item, .project-card, .btn, .collab-card, .outreach-card')
+                    .forEach(function(el) {
+                        el.addEventListener('mouseenter', function() { cursor.classList.add('hover'); });
+                        el.addEventListener('mouseleave', function() { cursor.classList.remove('hover'); });
+                    });
+            }
+
+            // ============================================================
+            // TYPING EFFECT
+            // ============================================================
+            const text = "Building, coordinating, and shipping real digital projects.";
+            const output = document.getElementById('typedOutput');
+            let i = 0;
+            function typeWriter() {
+                if (i < text.length) {
+                    output.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 25);
+                }
+            }
+            setTimeout(typeWriter, 500);
+
+            // ============================================================
+            // PARTICLES
+            // ============================================================
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let w, h;
+
+            function resizeCanvas() {
+                const hero = document.querySelector('.hero');
+                w = hero.offsetWidth;
+                h = hero.offsetHeight;
+                canvas.width = w;
+                canvas.height = h;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * w;
+                    this.y = Math.random() * h;
+                    this.size = Math.random() * 2 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.3;
+                    this.speedY = (Math.random() - 0.5) * 0.3;
+                    this.opacity = Math.random() * 0.3 + 0.1;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.x < 0 || this.x > w) this.speedX *= -1;
+                    if (this.y < 0 || this.y > h) this.speedY *= -1;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(74, 26, 122, ' + this.opacity + ')';
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < 80; i++) {
+                particles.push(new Particle());
+            }
+
+            function animateParticles() {
+                ctx.clearRect(0, 0, w, h);
+                particles.forEach(function(p) {
+                    p.update();
+                    p.draw();
+                });
+                requestAnimationFrame(animateParticles);
+            }
+            animateParticles();
+
+            // ============================================================
+            // NAV TOGGLE
+            // ============================================================
             const navToggle = document.getElementById('navToggle');
             const navLinks = document.getElementById('navLinks');
 
@@ -2253,7 +2871,9 @@
                 });
             });
 
-            // ---- NAVBAR SCROLL ----
+            // ============================================================
+            // NAVBAR SCROLL
+            // ============================================================
             const navbar = document.getElementById('navbar');
             window.addEventListener('scroll', function() {
                 if (window.pageYOffset > 20) {
@@ -2263,7 +2883,9 @@
                 }
             });
 
-            // ---- SCROLL REVEAL (General) ----
+            // ============================================================
+            // SCROLL REVEAL (General)
+            // ============================================================
             const reveals = document.querySelectorAll('.reveal');
             const observer = new IntersectionObserver(function(entries) {
                 entries.forEach(function(entry) {
@@ -2279,7 +2901,9 @@
                 observer.observe(el);
             });
 
-            // ---- SCROLL REVEAL (Coordination Gallery) ----
+            // ============================================================
+            // SCROLL REVEAL (Coordination Gallery)
+            // ============================================================
             const galleryItems = document.querySelectorAll('.coordination-gallery .gallery-item');
             const galleryObserver = new IntersectionObserver(function(entries) {
                 entries.forEach(function(entry) {
@@ -2295,7 +2919,35 @@
                 galleryObserver.observe(item);
             });
 
-            // ---- MODALS ----
+            // ============================================================
+            // ANIMATED COUNTERS
+            // ============================================================
+            const counters = document.querySelectorAll('.counter-item .number');
+            const counterObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        const el = entry.target;
+                        const target = parseInt(el.getAttribute('data-count'));
+                        let current = 0;
+                        const increment = Math.ceil(target / 40);
+                        const timer = setInterval(function() {
+                            current += increment;
+                            if (current >= target) {
+                                el.textContent = target;
+                                clearInterval(timer);
+                            } else {
+                                el.textContent = current;
+                            }
+                        }, 30);
+                        counterObserver.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.5 });
+            counters.forEach(function(c) { counterObserver.observe(c); });
+
+            // ============================================================
+            // MODALS (Case Studies)
+            // ============================================================
             const modals = document.querySelectorAll('.modal-overlay');
             const openTriggers = document.querySelectorAll('[data-modal]');
             const closeButtons = document.querySelectorAll('[data-close]');
@@ -2340,10 +2992,138 @@
                 if (e.key === 'Escape') {
                     const openModal = document.querySelector('.modal-overlay.open');
                     if (openModal) closeModal(openModal);
+                    closeLightbox();
                 }
             });
 
-            // ---- SMOOTH SCROLL ----
+            // ============================================================
+            // LIGHTBOX
+            // ============================================================
+            const lightbox = document.getElementById('lightbox');
+            const lightboxContent = document.getElementById('lightboxContent');
+            const lightboxClose = document.getElementById('lightboxClose');
+            const lightboxPrev = document.getElementById('lightboxPrev');
+            const lightboxNext = document.getElementById('lightboxNext');
+            let lightboxItems = [];
+            let currentIndex = 0;
+
+            function buildLightboxItems() {
+                lightboxItems = [];
+                document.querySelectorAll('.coordination-gallery .gallery-item').forEach(function(item) {
+                    const type = item.dataset.type || 'image';
+                    const url = item.dataset.url || '';
+                    const isShort = item.dataset.short === 'true';
+                    lightboxItems.push({ type: type, url: url, short: isShort });
+                });
+            }
+            buildLightboxItems();
+
+            function openLightbox(index) {
+                if (index < 0) index = lightboxItems.length - 1;
+                if (index >= lightboxItems.length) index = 0;
+                currentIndex = index;
+                const item = lightboxItems[index];
+                lightboxContent.innerHTML = '';
+                lightbox.classList.add('open');
+                document.body.style.overflow = 'hidden';
+
+                if (item.type === 'youtube') {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = item.url + '?autoplay=1&rel=0';
+                    iframe.allow = 'autoplay; encrypted-media; fullscreen';
+                    iframe.allowFullscreen = true;
+                    iframe.loading = 'lazy';
+                    if (item.short) {
+                        iframe.classList.add('short');
+                    }
+                    lightboxContent.appendChild(iframe);
+                } else if (item.type === 'image') {
+                    const img = document.createElement('img');
+                    img.src = item.url;
+                    img.alt = 'Gallery item';
+                    img.loading = 'lazy';
+                    lightboxContent.appendChild(img);
+                }
+
+                updateNavButtons();
+            }
+
+            function updateNavButtons() {
+                if (lightboxItems.length <= 1) {
+                    lightboxPrev.classList.add('hidden');
+                    lightboxNext.classList.add('hidden');
+                    return;
+                }
+                lightboxPrev.classList.remove('hidden');
+                lightboxNext.classList.remove('hidden');
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('open');
+                document.body.style.overflow = '';
+                lightboxContent.innerHTML = '';
+                // Stop any playing videos
+                const iframes = lightboxContent.querySelectorAll('iframe');
+                iframes.forEach(function(iframe) {
+                    iframe.src = '';
+                });
+            }
+
+            // Open lightbox on gallery item click
+            document.querySelectorAll('.coordination-gallery .gallery-item').forEach(function(item, index) {
+                item.addEventListener('click', function() {
+                    openLightbox(index);
+                });
+            });
+
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === this) closeLightbox();
+            });
+
+            lightboxPrev.addEventListener('click', function(e) {
+                e.stopPropagation();
+                openLightbox(currentIndex - 1);
+            });
+
+            lightboxNext.addEventListener('click', function(e) {
+                e.stopPropagation();
+                openLightbox(currentIndex + 1);
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (lightbox.classList.contains('open')) {
+                    if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        openLightbox(currentIndex - 1);
+                    } else if (e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        openLightbox(currentIndex + 1);
+                    }
+                }
+            });
+
+            // Touch swipe support for lightbox
+            let touchStartX = 0;
+            let touchEndX = 0;
+            lightbox.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+            lightbox.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                const diff = touchStartX - touchEndX;
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                        openLightbox(currentIndex + 1);
+                    } else {
+                        openLightbox(currentIndex - 1);
+                    }
+                }
+            }, { passive: true });
+
+            // ============================================================
+            // SMOOTH SCROLL
+            // ============================================================
             document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
                 anchor.addEventListener('click', function(e) {
                     const targetId = this.getAttribute('href');
@@ -2358,7 +3138,9 @@
                 });
             });
 
-            // ---- VIDEO ERROR FALLBACK (Local videos) ----
+            // ============================================================
+            // VIDEO ERROR FALLBACK (Local videos)
+            // ============================================================
             document.querySelectorAll('.video-item video').forEach(function(video) {
                 video.addEventListener('error', function() {
                     const item = this.closest('.video-item');
@@ -2369,16 +3151,29 @@
                     fallback.className = 'video-error-fallback';
                     fallback.style.cssText =
                         'background:#fef2f2;color:#991b1b;padding:12px 16px;text-align:center;border-top:1px solid #fecaca;font-size:0.85rem;';
-                    fallback.innerHTML = `
-                            <strong>⚠️ Playback issue.</strong> 
-                            <a href="${src}" target="_blank" download style="color:#4a1a7a;font-weight:700;text-decoration:underline;">⬇️ Download</a>
-                        `;
+                    fallback.innerHTML =
+                        '<strong>⚠️ Playback issue.</strong> <a href="' + src +
+                        '" target="_blank" download style="color:#4a1a7a;font-weight:700;text-decoration:underline;">⬇️ Download</a>';
                     const caption = item.querySelector('.video-caption');
                     if (caption) caption.after(fallback);
                     else item.appendChild(fallback);
                     this.style.display = 'none';
                 });
             });
+
+            // ============================================================
+            // LIVE DATE/TIME
+            // ============================================================
+            function updateTime() {
+                const now = new Date();
+                const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                const el = document.getElementById('footerTime');
+                if (el) {
+                    el.textContent = '📍 Abbottabad, Pakistan · ' + now.toLocaleDateString('en-US', options);
+                }
+            }
+            updateTime();
+            setInterval(updateTime, 60000);
 
         })();
     </script>
