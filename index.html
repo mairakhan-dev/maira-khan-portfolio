@@ -58,8 +58,8 @@
         }
 
         ::selection {
-            background: var(--color-purple);
-            color: #fff;
+            background: var(--color-gold);
+            color: #1a1a1a;
         }
 
         a {
@@ -88,7 +88,7 @@
             font-weight: 600;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: var(--color-purple);
+            color: var(--color-gold);
             margin-bottom: 12px;
             display: block;
         }
@@ -183,10 +183,11 @@
             width: 52px;
             height: 52px;
             background: var(--color-gold-gradient);
-            color: #fff;
+            color: #1a1a1a;
             border: none;
             border-radius: 50%;
             font-size: 1.4rem;
+            font-weight: 700;
             cursor: pointer;
             box-shadow: 0 6px 24px rgba(201, 168, 76, 0.3);
             z-index: 999;
@@ -197,6 +198,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
         .back-to-top.visible {
             opacity: 1;
@@ -206,6 +208,94 @@
         .back-to-top:hover {
             transform: translateY(-4px) scale(1.05);
             box-shadow: 0 10px 32px rgba(201, 168, 76, 0.4);
+        }
+        .back-to-top svg {
+            position: absolute;
+            inset: -3px;
+            width: calc(100% + 6px);
+            height: calc(100% + 6px);
+            transform: rotate(-90deg);
+        }
+        .back-to-top svg circle {
+            fill: none;
+            stroke-width: 2.5;
+        }
+        .back-to-top svg .bg-circle {
+            stroke: rgba(255, 255, 255, 0.15);
+        }
+        .back-to-top svg .progress-circle {
+            stroke: var(--color-purple);
+            stroke-dasharray: 163.36;
+            stroke-dashoffset: 163.36;
+            transition: stroke-dashoffset 0.1s ease-out;
+        }
+
+        /* ============================================================
+           TOAST NOTIFICATION
+        ============================================================ */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--color-bg-dark);
+            color: var(--color-white);
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            z-index: 9998;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .toast.visible {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: all;
+        }
+        .toast .toast-icon {
+            margin-right: 8px;
+        }
+
+        /* ============================================================
+           SCROLL INDICATOR
+        ============================================================ */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--color-text-muted);
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0.6;
+            animation: bounceDown 2s ease-in-out infinite;
+            z-index: 1;
+        }
+        .scroll-indicator .arrow {
+            width: 20px;
+            height: 20px;
+            border-right: 2px solid var(--color-text-muted);
+            border-bottom: 2px solid var(--color-text-muted);
+            transform: rotate(45deg);
+            opacity: 0.4;
+        }
+        @keyframes bounceDown {
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(8px);
+            }
         }
 
         /* ============================================================
@@ -266,14 +356,18 @@
 
         .btn-gold {
             background: var(--color-gold-gradient);
-            color: var(--color-black);
-            box-shadow: 0 4px 14px rgba(201, 168, 76, 0.3);
+            color: #1a1a1a;
+            box-shadow: 0 4px 20px rgba(201, 168, 76, 0.35);
             font-weight: 700;
+            border: none;
+        }
+        .btn-gold::after {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), transparent);
         }
         .btn-gold:hover {
-            box-shadow: 0 10px 30px rgba(201, 168, 76, 0.5);
-            transform: translateY(-3px);
-            color: var(--color-black);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(201, 168, 76, 0.5);
+            color: #1a1a1a;
         }
 
         .btn-sm {
@@ -296,17 +390,17 @@
             gap: 6px;
         }
         .btn-link:hover {
-            color: var(--color-purple-dark);
+            color: var(--color-gold);
             gap: 12px;
         }
 
-        /* Let's Talk button - premium gold gradient */
         .btn-cta {
             background: var(--color-gold-gradient);
             color: #1a1a1a;
             box-shadow: 0 4px 20px rgba(201, 168, 76, 0.35);
             font-weight: 700;
             border: none;
+            animation: pulseGlow 2.5s ease-in-out infinite;
         }
         .btn-cta::after {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), transparent);
@@ -315,6 +409,16 @@
             transform: translateY(-3px) scale(1.02);
             box-shadow: 0 12px 35px rgba(201, 168, 76, 0.5);
             color: #1a1a1a;
+        }
+
+        @keyframes pulseGlow {
+            0%,
+            100% {
+                box-shadow: 0 4px 20px rgba(201, 168, 76, 0.3);
+            }
+            50% {
+                box-shadow: 0 4px 40px rgba(201, 168, 76, 0.5);
+            }
         }
 
         /* ============================================================
@@ -432,6 +536,12 @@
         .nav-links a:hover::after {
             width: 100%;
         }
+        .nav-links a.active {
+            color: var(--color-text);
+        }
+        .nav-links a.active::after {
+            width: 100%;
+        }
         .nav-links .btn-cta {
             margin-left: 8px;
         }
@@ -468,7 +578,7 @@
            HERO
         ============================================================ */
         .hero {
-            padding: calc(var(--nav-height) + 80px) 0 60px;
+            padding: calc(var(--nav-height) + 80px) 0 80px;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -537,11 +647,22 @@
             border-radius: 50px;
             margin-bottom: 24px;
             border: 1px solid rgba(201, 168, 76, 0.15);
+            animation: float 6s ease-in-out infinite;
         }
         .hero-badge::before {
             content: '✦';
             font-size: 0.6rem;
             color: var(--color-gold);
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-6px);
+            }
         }
 
         .hero h1 {
@@ -639,6 +760,8 @@
             flex-direction: column;
             box-shadow: var(--shadow-card);
             position: relative;
+            transform-style: preserve-3d;
+            perspective: 800px;
         }
         .project-card::before {
             content: '';
@@ -659,7 +782,7 @@
             z-index: 1;
         }
         .project-card:hover {
-            transform: translateY(-6px);
+            transform: translateY(-6px) rotateX(2deg) rotateY(2deg);
             box-shadow: var(--shadow-hover);
             border-color: rgba(201, 168, 76, 0.2);
         }
@@ -667,6 +790,9 @@
         .project-card.featured {
             grid-column: 1 / -1;
             border-left: 4px solid var(--color-gold);
+        }
+        .project-card.hidden {
+            display: none;
         }
 
         .project-thumb {
@@ -723,7 +849,7 @@
             font-weight: 600;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: var(--color-purple);
+            color: var(--color-gold);
             margin-bottom: 4px;
         }
 
@@ -773,6 +899,11 @@
             flex-wrap: wrap;
             gap: 10px;
             margin-top: auto;
+        }
+
+        .projects-load-more {
+            text-align: center;
+            margin-top: 40px;
         }
 
         /* ============================================================
@@ -1001,6 +1132,23 @@
             max-width: 400px;
         }
 
+        .lightbox-counter {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            font-weight: 500;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            padding: 6px 18px;
+            border-radius: 50px;
+            z-index: 10001;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            letter-spacing: 0.04em;
+        }
+
         .lightbox-close {
             position: fixed;
             top: 24px;
@@ -1051,36 +1199,6 @@
         .lightbox-nav.hidden {
             opacity: 0;
             pointer-events: none;
-        }
-        @media (max-width: 768px) {
-            .lightbox-nav {
-                width: 36px;
-                height: 36px;
-                font-size: 0.9rem;
-            }
-            .lightbox-nav.prev {
-                left: 8px;
-            }
-            .lightbox-nav.next {
-                right: 8px;
-            }
-            .lightbox-close {
-                top: 12px;
-                right: 16px;
-                font-size: 1.8rem;
-            }
-            .lightbox-content iframe {
-                max-width: 100%;
-            }
-            .lightbox-content iframe.short {
-                max-width: 280px;
-            }
-        }
-        @media (pointer: coarse) {
-            .lightbox-nav {
-                width: 44px;
-                height: 44px;
-            }
         }
 
         /* ============================================================
@@ -1524,6 +1642,14 @@
             font-size: 1rem;
             color: rgba(255, 255, 255, 0.4);
             font-weight: 400;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        .contact-email:hover {
+            color: var(--color-white);
+            background: rgba(255, 255, 255, 0.05);
         }
         .contact-email strong {
             color: var(--color-white);
@@ -1658,6 +1784,7 @@
             height: 100%;
             border: none;
             background: #000;
+            object-fit: cover;
         }
 
         .modal-video-grid {
@@ -1684,6 +1811,7 @@
             aspect-ratio: 16 / 9;
             background: var(--color-bg-dark);
             display: block;
+            object-fit: cover;
         }
         .modal-video-grid .video-item .video-caption {
             padding: 10px 14px 14px;
@@ -1819,7 +1947,7 @@
                 gap: 16px;
                 border-bottom: 1px solid var(--color-border);
                 transform: translateY(-120%);
-                transition: transform 0.4s ease;
+                transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
                 box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
                 align-items: flex-start;
             }
@@ -1836,13 +1964,16 @@
 
             .hero {
                 min-height: auto;
-                padding: calc(var(--nav-height) + 40px) 0 48px;
+                padding: calc(var(--nav-height) + 40px) 0 60px;
             }
             .hero h1 {
                 font-size: 2.4rem;
             }
             .hero-desc {
                 font-size: 0.9rem;
+            }
+            .scroll-indicator {
+                display: none;
             }
 
             .projects-grid {
@@ -1908,6 +2039,27 @@
             }
             .tcf-grid {
                 gap: 24px;
+            }
+            .lightbox-nav {
+                width: 36px;
+                height: 36px;
+                font-size: 0.9rem;
+            }
+            .lightbox-nav.prev {
+                left: 8px;
+            }
+            .lightbox-nav.next {
+                right: 8px;
+            }
+            .lightbox-close {
+                top: 12px;
+                right: 16px;
+                font-size: 1.8rem;
+            }
+            .lightbox-counter {
+                bottom: 16px;
+                font-size: 0.75rem;
+                padding: 4px 14px;
             }
         }
 
@@ -1991,53 +2143,36 @@
         .mt-16 { margin-top: 16px; }
         .mb-8 { margin-bottom: 8px; }
         .gap-8 { gap: 8px; }
-
-        /* Floating animation for badges */
-        .float-animation {
-            animation: float 6s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        /* Shimmer effect on gold elements */
-        .shimmer {
-            background: linear-gradient(135deg, #c9a84c, #f0d080, #c9a84c);
-            background-size: 200% 200%;
-            animation: shimmer 3s ease-in-out infinite;
-        }
-        @keyframes shimmer {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        /* Pulse glow for CTAs */
-        .pulse-glow {
-            animation: pulseGlow 2s ease-in-out infinite;
-        }
-        @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(201, 168, 76, 0.2); }
-            50% { box-shadow: 0 0 40px rgba(201, 168, 76, 0.4); }
-        }
     </style>
 </head>
 <body>
 
     <!-- LOADING SCREEN -->
-    <div id="loader">
+    <div id="loader" role="status" aria-label="Loading">
         <div class="loader-ring"></div>
         <div class="loader-text">Loading</div>
     </div>
 
     <!-- SCROLL PROGRESS BAR -->
-    <div class="scroll-progress" id="scrollProgress"></div>
+    <div class="scroll-progress" id="scrollProgress" role="progressbar" aria-label="Scroll progress"></div>
 
     <!-- CUSTOM CURSOR -->
-    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
 
     <!-- BACK TO TOP -->
-    <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        ↑
+        <svg viewBox="0 0 56 56">
+            <circle class="bg-circle" cx="28" cy="28" r="24" />
+            <circle class="progress-circle" cx="28" cy="28" r="24" id="progressCircle" />
+        </svg>
+    </button>
+
+    <!-- TOAST NOTIFICATION -->
+    <div class="toast" id="toast" role="alert">
+        <span class="toast-icon">✓</span>
+        <span id="toastMessage">Copied!</span>
+    </div>
 
     <!-- ============================================================
     NAVIGATION
@@ -2046,11 +2181,11 @@
         <div class="container">
             <a href="#" class="nav-logo" aria-label="Maira Khan home">Maira<span>.</span></a>
             <ul class="nav-links" id="navLinks" role="menubar">
-                <li role="none"><a href="#work" role="menuitem">Work</a></li>
-                <li role="none"><a href="#coordination" role="menuitem">Experience</a></li>
-                <li role="none"><a href="#collaborations" role="menuitem">Collaborations</a></li>
-                <li role="none"><a href="#skills" role="menuitem">Skills</a></li>
-                <li role="none"><a href="#contact" role="menuitem">Contact</a></li>
+                <li role="none"><a href="#work" role="menuitem" data-section="work">Work</a></li>
+                <li role="none"><a href="#coordination" role="menuitem" data-section="coordination">Experience</a></li>
+                <li role="none"><a href="#collaborations" role="menuitem" data-section="collaborations">Collaborations</a></li>
+                <li role="none"><a href="#skills" role="menuitem" data-section="skills">Skills</a></li>
+                <li role="none"><a href="#contact" role="menuitem" data-section="contact">Contact</a></li>
                 <li role="none"><a href="#contact" class="btn btn-cta btn-sm" role="menuitem">Let's Talk</a></li>
             </ul>
             <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false">
@@ -2062,39 +2197,43 @@
     <!-- ============================================================
     HERO
     ============================================================ -->
-    <section class="hero" id="hero">
-        <canvas id="particles-canvas"></canvas>
-        <div class="hero-glow"></div>
-        <div class="hero-glow-2"></div>
+    <section class="hero" id="hero" aria-label="Hero section">
+        <canvas id="particles-canvas" aria-hidden="true"></canvas>
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="hero-glow-2" aria-hidden="true"></div>
         <div class="container">
             <div class="hero-content">
-                <div class="hero-badge float-animation">Building &amp; Coordinating</div>
+                <div class="hero-badge">Building &amp; Coordinating</div>
                 <h1>
                     Maira <span class="highlight">Khan</span>
                 </h1>
                 <p class="hero-lead" id="typingText">
-                    <span id="typedOutput"></span><span class="typing-cursor"></span>
+                    <span id="typedOutput"></span><span class="typing-cursor" aria-hidden="true"></span>
                 </p>
                 <p class="hero-desc">
                     Web dev • AI projects • Video production • Project coordination — turning ideas into shipped products.
                 </p>
                 <div class="hero-actions">
                     <a href="#work" class="btn">View My Work</a>
-                    <a href="#contact" class="btn btn-cta pulse-glow">Let's Work Together</a>
+                    <a href="#contact" class="btn btn-cta">Let's Work Together</a>
                 </div>
                 <div class="hero-social">
-                    <a href="https://www.linkedin.com/in/maira-khan-2936b93aa/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                    <span class="sep">/</span>
-                    <a href="https://github.com/mairakhan-dev" target="_blank" rel="noopener noreferrer">GitHub</a>
-                    <span class="sep">/</span>
-                    <a href="mailto:mairakhan.contact@gmail.com">Email</a>
+                    <a href="https://www.linkedin.com/in/maira-khan-2936b93aa/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">LinkedIn</a>
+                    <span class="sep" aria-hidden="true">/</span>
+                    <a href="https://github.com/mairakhan-dev" target="_blank" rel="noopener noreferrer" aria-label="GitHub">GitHub</a>
+                    <span class="sep" aria-hidden="true">/</span>
+                    <a href="mailto:mairakhan.contact@gmail.com" aria-label="Email">Email</a>
                 </div>
             </div>
+        </div>
+        <div class="scroll-indicator" aria-hidden="true">
+            <span>Scroll</span>
+            <div class="arrow"></div>
         </div>
     </section>
 
     <!-- ============================================================
-    SECTION — SELECTED WORK (20 Projects)
+    SECTION — SELECTED WORK
     ============================================================ -->
     <section class="section-padding" id="work">
         <div class="container">
@@ -2104,10 +2243,10 @@
                 <p class="section-subtitle">A mix of solo builds, freelancer collaborations, and end‑to‑end coordination.</p>
             </div>
 
-            <div class="projects-grid">
+            <div class="projects-grid" id="projectsGrid">
 
                 <!-- PROJECT 1: GRINDLYLEARN (Featured) -->
-                <article class="project-card featured reveal">
+                <article class="project-card featured reveal" data-category="featured">
                     <div class="project-thumb" style="background: #1a1428;">
                         <div class="placeholder">GrindlyLearn <small>EdTech Platform</small></div>
                         <span class="thumb-badge">Featured</span>
@@ -2126,7 +2265,7 @@
                 </article>
 
                 <!-- PROJECT 2: AURIX -->
-                <article class="project-card reveal">
+                <article class="project-card reveal" data-category="web">
                     <div class="project-thumb" style="background: #1c1a22;">
                         <div class="placeholder">Aurix <small>E‑Commerce UI</small></div>
                     </div>
@@ -2144,7 +2283,7 @@
                 </article>
 
                 <!-- PROJECT 3: AI CHATBOT -->
-                <article class="project-card reveal">
+                <article class="project-card reveal" data-category="ai">
                     <div class="project-thumb" style="background: #12101a;">
                         <div class="placeholder">AI Chatbot <small>Conversational AI</small></div>
                     </div>
@@ -2162,7 +2301,7 @@
                 </article>
 
                 <!-- PROJECT 4: VIDEO EDITING (TCF) -->
-                <article class="project-card reveal">
+                <article class="project-card reveal" data-category="video">
                     <div class="project-thumb" style="background: #1a1418;">
                         <div class="placeholder">Video Editing <small>TCF Campaigns</small></div>
                     </div>
@@ -2180,7 +2319,7 @@
                 </article>
 
                 <!-- PROJECT 5: Portfolio Website -->
-                <article class="project-card reveal">
+                <article class="project-card reveal" data-category="web">
                     <div class="project-thumb" style="background: #0e0c10;">
                         <div class="placeholder">Portfolio <small>Personal Brand</small></div>
                     </div>
@@ -2197,7 +2336,7 @@
                 </article>
 
                 <!-- PROJECT 6: CTRL+FUTURE Website -->
-                <article class="project-card reveal">
+                <article class="project-card reveal" data-category="web">
                     <div class="project-thumb" style="background: #1a1428;">
                         <div class="placeholder">CTRL+FUTURE <small>Event Landing</small></div>
                     </div>
@@ -2214,7 +2353,7 @@
                 </article>
 
                 <!-- PROJECT 7: TCF Fundraising Site -->
-                <article class="project-card reveal">
+                <article class="project-card reveal hidden" data-category="web">
                     <div class="project-thumb" style="background: #0a1a0a;">
                         <div class="placeholder">TCF Fundraising <small>Non‑Profit</small></div>
                     </div>
@@ -2230,8 +2369,8 @@
                     </div>
                 </article>
 
-                <!-- PROJECT 8: Freelancer Dashboard (Concept) -->
-                <article class="project-card reveal">
+                <!-- PROJECT 8: Freelancer Dashboard -->
+                <article class="project-card reveal hidden" data-category="design">
                     <div class="project-thumb" style="background: #1a1a2e;">
                         <div class="placeholder">Freelancer Hub <small>Dashboard</small></div>
                     </div>
@@ -2245,7 +2384,7 @@
                 </article>
 
                 <!-- PROJECT 9: Study Group App -->
-                <article class="project-card reveal">
+                <article class="project-card reveal hidden" data-category="mobile">
                     <div class="project-thumb" style="background: #0e1a2a;">
                         <div class="placeholder">Study Groups <small>Mobile App</small></div>
                     </div>
@@ -2259,7 +2398,7 @@
                 </article>
 
                 <!-- PROJECT 10: AI Content Generator -->
-                <article class="project-card reveal">
+                <article class="project-card reveal hidden" data-category="ai">
                     <div class="project-thumb" style="background: #1a0e1a;">
                         <div class="placeholder">AI Writer <small>Content Gen</small></div>
                     </div>
@@ -2273,7 +2412,7 @@
                 </article>
 
                 <!-- PROJECT 11: E‑Learning Platform -->
-                <article class="project-card reveal">
+                <article class="project-card reveal hidden" data-category="web">
                     <div class="project-thumb" style="background: #0a1a1a;">
                         <div class="placeholder">LearnHub <small>E‑Learning</small></div>
                     </div>
@@ -2287,7 +2426,7 @@
                 </article>
 
                 <!-- PROJECT 12: Event Registration System -->
-                <article class="project-card reveal">
+                <article class="project-card reveal hidden" data-category="web">
                     <div class="project-thumb" style="background: #1a1a0a;">
                         <div class="placeholder">EventReg <small>Registration</small></div>
                     </div>
@@ -2301,7 +2440,7 @@
                 </article>
 
                 <!-- PROJECT 13: Brand Identity Package -->
-                <article class="project-card reveal">
+                <article class="project-card reveal hidden" data-category="design">
                     <div class="project-thumb" style="background: #1a0a0a;">
                         <div class="placeholder">Brand Identity <small>Design</small></div>
                     </div>
@@ -2315,7 +2454,7 @@
                 </article>
 
                 <!-- PROJECT 14: Social Media Campaign -->
-                <article class="project-card reveal">
+                <article class="project-card reveal hidden" data-category="marketing">
                     <div class="project-thumb" style="background: #0a0a1a;">
                         <div class="placeholder">Social Campaign <small>Marketing</small></div>
                     </div>
@@ -2329,7 +2468,7 @@
                 </article>
 
                 <!-- PROJECT 15: Freelancer Onboarding Flow -->
-                <article class="project-card reveal">
+                <article class="project-card reveal hidden" data-category="design">
                     <div class="project-thumb" style="background: #1a0e0e;">
                         <div class="placeholder">Onboarding <small>UX Flow</small></div>
                     </div>
@@ -2343,7 +2482,7 @@
                 </article>
 
                 <!-- PROJECT 16: Video Podcast Series -->
-                <article class="project-card reveal">
+                <article class="project-card reveal hidden" data-category="video">
                     <div class="project-thumb" style="background: #0a0a0a;">
                         <div class="placeholder">Podcast <small>Video Series</small></div>
                     </div>
@@ -2357,7 +2496,7 @@
                 </article>
 
                 <!-- PROJECT 17: Student Portal -->
-                <article class="project-card reveal">
+                <article class="project-card reveal hidden" data-category="web">
                     <div class="project-thumb" style="background: #0a1a0e;">
                         <div class="placeholder">Student Portal <small>Dashboard</small></div>
                     </div>
@@ -2371,7 +2510,7 @@
                 </article>
 
                 <!-- PROJECT 18: AI Resume Builder -->
-                <article class="project-card reveal">
+                <article class="project-card reveal hidden" data-category="ai">
                     <div class="project-thumb" style="background: #1a1a1a;">
                         <div class="placeholder">AI Resume <small>Tool</small></div>
                     </div>
@@ -2385,7 +2524,7 @@
                 </article>
 
                 <!-- PROJECT 19: Community Forum -->
-                <article class="project-card reveal">
+                <article class="project-card reveal hidden" data-category="web">
                     <div class="project-thumb" style="background: #0e0e1a;">
                         <div class="placeholder">Community Hub <small>Forum</small></div>
                     </div>
@@ -2399,7 +2538,7 @@
                 </article>
 
                 <!-- PROJECT 20: Promo Video Compilation -->
-                <article class="project-card reveal">
+                <article class="project-card reveal hidden" data-category="video">
                     <div class="project-thumb" style="background: #1a0a14;">
                         <div class="placeholder">Promo Reel <small>Video Comp</small></div>
                     </div>
@@ -2412,6 +2551,10 @@
                     </div>
                 </article>
 
+            </div>
+
+            <div class="projects-load-more">
+                <button class="btn btn-outline" id="loadMoreBtn">Load More Projects</button>
             </div>
         </div>
     </section>
@@ -2473,7 +2616,7 @@
                 <div class="coordination-gallery">
                     <div class="gallery-item" style="padding:0;background:#0a080c;" data-type="youtube" data-url="https://www.youtube.com/embed/oBCzTCgvktI" data-short="true">
                         <div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0a080c;">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Crect width='100%25' height='100%25' fill='%231a1428'/%3E%3Ctext x='50%25' y='45%25' font-family='Inter' font-size='14' fill='%238a8690' text-anchor='middle'%3EPromo Video%3C/text%3E%3Ctext x='50%25' y='60%25' font-family='Inter' font-size='10' fill='%235a5660' text-anchor='middle'%3EClick to play%3C/text%3E%3C/svg%3E" alt="CTRL+FUTURE Promo Video" style="width:100%;height:100%;object-fit:cover;" />
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Crect width='100%25' height='100%25' fill='%231a1428'/%3E%3Ctext x='50%25' y='45%25' font-family='Inter' font-size='14' fill='%238a8690' text-anchor='middle'%3EPromo Video%3C/text%3E%3Ctext x='50%25' y='60%25' font-family='Inter' font-size='10' fill='%235a5660' text-anchor='middle'%3EClick to play%3C/text%3E%3C/svg%3E" alt="CTRL+FUTURE Promo Video" style="width:100%;height:100%;object-fit:cover;" loading="lazy" />
                             <span class="play-badge">Watch</span>
                             <div class="gallery-overlay"><span>▶ Play</span></div>
                         </div>
@@ -2529,7 +2672,7 @@
                 </div>
                 <div class="tcf-image reveal">
                     <span style="opacity:0.3;font-size:3rem;">🧡</span>
-                    <span style="position:absolute;bottom:16px;right:16px;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);padding:6px 16px;border-radius:50px;font-size:0.7rem;color:var(--color-gold);border:1px solid rgba(201,168,76,0.2);">TCF Partner</span>
+                    <span class="tcf-badge">TCF Partner</span>
                 </div>
             </div>
         </div>
@@ -2751,11 +2894,11 @@
                     Open to collaborating on digital projects, creative work, coordination, and anything where I can help turn ideas into execution.
                 </p>
                 <div class="contact-actions">
-                    <a href="mailto:mairakhan.contact@gmail.com" class="btn btn-gold pulse-glow">Email Me</a>
+                    <a href="mailto:mairakhan.contact@gmail.com" class="btn btn-gold">Email Me</a>
                     <a href="https://www.linkedin.com/in/maira-khan-2936b93aa/" target="_blank" rel="noopener noreferrer" class="btn" style="background:rgba(255,255,255,0.06);color:var(--color-white);border:1px solid rgba(255,255,255,0.1);">LinkedIn</a>
                 </div>
-                <p class="contact-email">
-                    <strong>mairakhan.contact@gmail.com</strong>
+                <p class="contact-email" id="emailCopy" role="button" tabindex="0" aria-label="Copy email to clipboard">
+                    <strong>mairakhan.contact@gmail.com</strong> <span style="font-size:0.7rem;opacity:0.4;">(click to copy)</span>
                 </p>
             </div>
         </div>
@@ -2779,11 +2922,12 @@
     <!-- ============================================================
     LIGHTBOX
     ============================================================ -->
-    <div class="lightbox-overlay" id="lightbox">
-        <button class="lightbox-close" id="lightboxClose">✕</button>
-        <button class="lightbox-nav prev" id="lightboxPrev">‹</button>
-        <button class="lightbox-nav next" id="lightboxNext">›</button>
+    <div class="lightbox-overlay" id="lightbox" role="dialog" aria-modal="true" aria-label="Gallery lightbox">
+        <button class="lightbox-close" id="lightboxClose" aria-label="Close lightbox">✕</button>
+        <button class="lightbox-nav prev" id="lightboxPrev" aria-label="Previous image">‹</button>
+        <button class="lightbox-nav next" id="lightboxNext" aria-label="Next image">›</button>
         <div class="lightbox-content" id="lightboxContent"></div>
+        <div class="lightbox-counter" id="lightboxCounter">1 / 7</div>
     </div>
 
     <!-- ============================================================
@@ -2791,11 +2935,11 @@
     ============================================================ -->
 
     <!-- MODAL: GrindlyLearn -->
-    <div class="modal-overlay" id="modal-grindlylearn" role="dialog">
+    <div class="modal-overlay" id="modal-grindlylearn" role="dialog" aria-modal="true" aria-labelledby="modal-grindlylearn-title">
         <div class="modal">
-            <button class="modal-close" data-close>&times;</button>
+            <button class="modal-close" data-close aria-label="Close case study">&times;</button>
             <span class="modal-tag">Case Study</span>
-            <h2>GrindlyLearn</h2>
+            <h2 id="modal-grindlylearn-title">GrindlyLearn</h2>
             <p class="modal-meta">EdTech · Product Building · Web Dev</p>
             <div class="modal-body">
                 <div><h4>Overview</h4><p>Student‑focused EdTech with study groups, focus tools, class battles &amp; teacher analytics.</p></div>
@@ -2807,11 +2951,11 @@
     </div>
 
     <!-- MODAL: Aurix -->
-    <div class="modal-overlay" id="modal-aurix" role="dialog">
+    <div class="modal-overlay" id="modal-aurix" role="dialog" aria-modal="true" aria-labelledby="modal-aurix-title">
         <div class="modal">
-            <button class="modal-close" data-close>&times;</button>
+            <button class="modal-close" data-close aria-label="Close case study">&times;</button>
             <span class="modal-tag">Case Study</span>
-            <h2>Aurix</h2>
+            <h2 id="modal-aurix-title">Aurix</h2>
             <p class="modal-meta">E‑Commerce · Frontend</p>
             <div class="modal-body">
                 <div><h4>Overview</h4><p>Modern e‑commerce frontend — responsive UI, product presentation, smooth navigation.</p></div>
@@ -2823,14 +2967,14 @@
     </div>
 
     <!-- MODAL: AI Chatbot -->
-    <div class="modal-overlay" id="modal-aichatbot" role="dialog">
+    <div class="modal-overlay" id="modal-aichatbot" role="dialog" aria-modal="true" aria-labelledby="modal-aichatbot-title">
         <div class="modal">
-            <button class="modal-close" data-close>&times;</button>
+            <button class="modal-close" data-close aria-label="Close case study">&times;</button>
             <span class="modal-tag">Demo</span>
-            <h2>AI Chatbot</h2>
+            <h2 id="modal-aichatbot-title">AI Chatbot</h2>
             <p class="modal-meta">AI · Chatbot</p>
             <div class="modal-body">
-                <div><h4>Demo</h4><div class="modal-video-wrapper"><video controls preload="metadata"><source src="demo.mp4" type="video/mp4" />Your browser doesn't support video.</video></div></div>
+                <div><h4>Demo</h4><div class="modal-video-wrapper"><video controls preload="metadata" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Crect width='100%25' height='100%25' fill='%231a1428'/%3E%3Ctext x='50%25' y='50%25' font-family='Inter' font-size='16' fill='%238a8690' text-anchor='middle'%3E▶ AI Chatbot Demo%3C/text%3E%3C/svg%3E"><source src="demo.mp4" type="video/mp4" />Your browser doesn't support video.</video></div></div>
                 <div><h4>Overview</h4><p>NLP‑powered chatbot demo with natural language understanding.</p></div>
                 <div><h4>My Role</h4><p>Coordinated with a freelancer who built the implementation.</p></div>
                 <div><h4>Tech</h4><ul><li>Python/Flask</li><li>API integration</li><li>NLP libraries</li></ul></div>
@@ -2839,11 +2983,11 @@
     </div>
 
     <!-- MODAL: Video Editing -->
-    <div class="modal-overlay" id="modal-videoedit" role="dialog">
+    <div class="modal-overlay" id="modal-videoedit" role="dialog" aria-modal="true" aria-labelledby="modal-videoedit-title">
         <div class="modal">
-            <button class="modal-close" data-close>&times;</button>
+            <button class="modal-close" data-close aria-label="Close case study">&times;</button>
             <span class="modal-tag">Case Study</span>
-            <h2>Video Editing — TCF</h2>
+            <h2 id="modal-videoedit-title">Video Editing — TCF</h2>
             <p class="modal-meta">Creative Production · TCF Fundraising</p>
             <div class="modal-body">
                 <div><h4>Overview</h4><p>Videos for TCF — Independence Day, orientation, girls‑only event, football tournament.</p></div>
@@ -2851,7 +2995,7 @@
                 <div><h4>Videos</h4>
                     <div class="modal-video-grid">
                         <div class="video-item">
-                            <video controls preload="metadata"><source src="tcfvid.mp4" type="video/mp4" /></video>
+                            <video controls preload="metadata" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Crect width='100%25' height='100%25' fill='%231a1428'/%3E%3Ctext x='50%25' y='50%25' font-family='Inter' font-size='14' fill='%238a8690' text-anchor='middle'%3E▶ TCF Independence%3C/text%3E%3C/svg%3E"><source src="tcfvid.mp4" type="video/mp4" /></video>
                             <div class="video-caption">TCF Independence Day</div>
                         </div>
                         <div class="video-item">
@@ -2859,7 +3003,7 @@
                             <div class="video-caption">TCF Orientation</div>
                         </div>
                         <div class="video-item">
-                            <video controls preload="metadata"><source src="comingsoon.mp4" type="video/mp4" /></video>
+                            <video controls preload="metadata" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Crect width='100%25' height='100%25' fill='%231a1428'/%3E%3Ctext x='50%25' y='50%25' font-family='Inter' font-size='14' fill='%238a8690' text-anchor='middle'%3E▶ Peshawar%3C/text%3E%3C/svg%3E"><source src="comingsoon.mp4" type="video/mp4" /></video>
                             <div class="video-caption">TCF Orientation Peshawar</div>
                         </div>
                         <div class="video-item">
@@ -2867,7 +3011,7 @@
                             <div class="video-caption">Girls‑Only Event</div>
                         </div>
                         <div class="video-item">
-                            <video controls preload="metadata"><source src="footballevent.mp4" type="video/mp4" /></video>
+                            <video controls preload="metadata" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Crect width='100%25' height='100%25' fill='%231a1428'/%3E%3Ctext x='50%25' y='50%25' font-family='Inter' font-size='14' fill='%238a8690' text-anchor='middle'%3E▶ Football%3C/text%3E%3C/svg%3E"><source src="footballevent.mp4" type="video/mp4" /></video>
                             <div class="video-caption">Football Tournament</div>
                         </div>
                     </div>
@@ -2877,11 +3021,11 @@
     </div>
 
     <!-- MODAL: CTRL+FUTURE -->
-    <div class="modal-overlay" id="modal-ctrlfuture" role="dialog">
+    <div class="modal-overlay" id="modal-ctrlfuture" role="dialog" aria-modal="true" aria-labelledby="modal-ctrlfuture-title">
         <div class="modal">
-            <button class="modal-close" data-close>&times;</button>
+            <button class="modal-close" data-close aria-label="Close case study">&times;</button>
             <span class="modal-tag">Case Study</span>
-            <h2>CTRL+FUTURE</h2>
+            <h2 id="modal-ctrlfuture-title">CTRL+FUTURE</h2>
             <p class="modal-meta">Event Coordination · Student Tech Event</p>
             <div class="modal-body">
                 <div><h4>Overview</h4><p>Planned one‑week online event connecting students with industry pros.</p></div>
@@ -2899,21 +3043,37 @@
         (function() {
             'use strict';
 
+            // ============================================================
             // LOADING SCREEN
+            // ============================================================
             window.addEventListener('load', function() {
                 document.getElementById('loader').classList.add('hidden');
+                document.body.style.overflow = '';
             });
 
+            // ============================================================
             // SCROLL PROGRESS
+            // ============================================================
             const progressBar = document.getElementById('scrollProgress');
+            const progressCircle = document.getElementById('progressCircle');
+            const circumference = 2 * Math.PI * 24;
+
             window.addEventListener('scroll', function() {
                 const scrollTop = window.pageYOffset;
                 const docHeight = document.documentElement.scrollHeight - window.innerHeight;
                 const progress = (scrollTop / docHeight) * 100;
                 progressBar.style.width = progress + '%';
+
+                // Back to top ring
+                if (progressCircle) {
+                    const offset = circumference - (progress / 100) * circumference;
+                    progressCircle.style.strokeDashoffset = offset;
+                }
             });
 
+            // ============================================================
             // BACK TO TOP
+            // ============================================================
             const backBtn = document.getElementById('backToTop');
             window.addEventListener('scroll', function() {
                 if (window.pageYOffset > 400) {
@@ -2926,7 +3086,63 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
+            // ============================================================
+            // TOAST NOTIFICATION
+            // ============================================================
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            let toastTimeout;
+
+            function showToast(message) {
+                toastMessage.textContent = message || 'Copied!';
+                toast.classList.add('visible');
+                clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(function() {
+                    toast.classList.remove('visible');
+                }, 2500);
+            }
+
+            // ============================================================
+            // COPY EMAIL
+            // ============================================================
+            const emailCopy = document.getElementById('emailCopy');
+            if (emailCopy) {
+                emailCopy.addEventListener('click', function() {
+                    const email = 'mairakhan.contact@gmail.com';
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(email).then(function() {
+                            showToast('✓ Email copied!');
+                        }).catch(function() {
+                            // Fallback
+                            const textarea = document.createElement('textarea');
+                            textarea.value = email;
+                            document.body.appendChild(textarea);
+                            textarea.select();
+                            document.execCommand('copy');
+                            document.body.removeChild(textarea);
+                            showToast('✓ Email copied!');
+                        });
+                    } else {
+                        const textarea = document.createElement('textarea');
+                        textarea.value = email;
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textarea);
+                        showToast('✓ Email copied!');
+                    }
+                });
+                emailCopy.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            }
+
+            // ============================================================
             // CUSTOM CURSOR
+            // ============================================================
             const cursor = document.getElementById('cursorDot');
             if (window.matchMedia('(pointer: fine)').matches) {
                 document.addEventListener('mousemove', function(e) {
@@ -2940,10 +3156,13 @@
                     });
             }
 
+            // ============================================================
             // TYPING EFFECT
+            // ============================================================
             const text = "Building, coordinating, and shipping real digital projects.";
             const output = document.getElementById('typedOutput');
             let i = 0;
+
             function typeWriter() {
                 if (i < text.length) {
                     output.textContent += text.charAt(i);
@@ -2953,11 +3172,14 @@
             }
             setTimeout(typeWriter, 400);
 
+            // ============================================================
             // PARTICLES
+            // ============================================================
             const canvas = document.getElementById('particles-canvas');
             const ctx = canvas.getContext('2d');
             let particles = [];
             let w, h;
+            let particleCount = 80;
 
             function resizeCanvas() {
                 const hero = document.querySelector('.hero');
@@ -2965,9 +3187,18 @@
                 h = hero.offsetHeight;
                 canvas.width = w;
                 canvas.height = h;
+                // Reduce particles on mobile
+                if (window.innerWidth < 768) {
+                    particleCount = 40;
+                } else {
+                    particleCount = 80;
+                }
+                // Rebuild particles
+                particles = [];
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push(new Particle());
+                }
             }
-            resizeCanvas();
-            window.addEventListener('resize', resizeCanvas);
 
             class Particle {
                 constructor() {
@@ -2992,9 +3223,8 @@
                 }
             }
 
-            for (let i = 0; i < 60; i++) {
-                particles.push(new Particle());
-            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
 
             function animateParticles() {
                 ctx.clearRect(0, 0, w, h);
@@ -3006,7 +3236,9 @@
             }
             animateParticles();
 
+            // ============================================================
             // NAV TOGGLE
+            // ============================================================
             const navToggle = document.getElementById('navToggle');
             const navLinks = document.getElementById('navLinks');
 
@@ -3014,6 +3246,7 @@
                 const isOpen = navLinks.classList.toggle('open');
                 navToggle.classList.toggle('active');
                 navToggle.setAttribute('aria-expanded', isOpen);
+                document.body.style.overflow = isOpen ? 'hidden' : '';
             });
 
             navLinks.querySelectorAll('a').forEach(function(link) {
@@ -3021,20 +3254,45 @@
                     navLinks.classList.remove('open');
                     navToggle.classList.remove('active');
                     navToggle.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
                 });
             });
 
-            // NAVBAR SCROLL
+            // ============================================================
+            // NAVBAR SCROLL & ACTIVE SECTION
+            // ============================================================
             const navbar = document.getElementById('navbar');
+            const sections = document.querySelectorAll('section[id]');
+            const navLinksAll = document.querySelectorAll('.nav-links a[data-section]');
+
             window.addEventListener('scroll', function() {
+                // Scroll shadow
                 if (window.pageYOffset > 20) {
                     navbar.classList.add('scrolled');
                 } else {
                     navbar.classList.remove('scrolled');
                 }
+
+                // Active section
+                let current = '';
+                sections.forEach(function(section) {
+                    const sectionTop = section.offsetTop - 120;
+                    if (window.pageYOffset >= sectionTop) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinksAll.forEach(function(link) {
+                    link.classList.remove('active');
+                    if (link.dataset.section === current) {
+                        link.classList.add('active');
+                    }
+                });
             });
 
+            // ============================================================
             // SCROLL REVEAL
+            // ============================================================
             const reveals = document.querySelectorAll('.reveal');
             const observer = new IntersectionObserver(function(entries) {
                 entries.forEach(function(entry) {
@@ -3045,7 +3303,9 @@
             }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
             reveals.forEach(function(el) { observer.observe(el); });
 
+            // ============================================================
             // GALLERY REVEAL
+            // ============================================================
             const galleryItems = document.querySelectorAll('.coordination-gallery .gallery-item');
             const galleryObserver = new IntersectionObserver(function(entries) {
                 entries.forEach(function(entry) {
@@ -3056,7 +3316,9 @@
             }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
             galleryItems.forEach(function(item) { galleryObserver.observe(item); });
 
+            // ============================================================
             // COUNTERS
+            // ============================================================
             const counters = document.querySelectorAll('.counter-item .number');
             const counterObserver = new IntersectionObserver(function(entries) {
                 entries.forEach(function(entry) {
@@ -3080,7 +3342,42 @@
             }, { threshold: 0.5 });
             counters.forEach(function(c) { counterObserver.observe(c); });
 
+            // ============================================================
+            // LOAD MORE PROJECTS
+            // ============================================================
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            const hiddenProjects = document.querySelectorAll('.project-card.hidden');
+            let projectsVisible = 6;
+
+            if (loadMoreBtn && hiddenProjects.length > 0) {
+                loadMoreBtn.addEventListener('click', function() {
+                    let count = 0;
+                    hiddenProjects.forEach(function(project) {
+                        if (count < 6) {
+                            project.classList.remove('hidden');
+                            count++;
+                            projectsVisible++;
+                        }
+                    });
+                    // Check if all are visible
+                    const remaining = document.querySelectorAll('.project-card.hidden');
+                    if (remaining.length === 0) {
+                        loadMoreBtn.style.display = 'none';
+                    }
+                    // Re-run reveal observer for new items
+                    setTimeout(function() {
+                        document.querySelectorAll('.project-card:not(.hidden) .reveal').forEach(function(el) {
+                            observer.observe(el);
+                        });
+                    }, 100);
+                });
+            } else if (loadMoreBtn) {
+                loadMoreBtn.style.display = 'none';
+            }
+
+            // ============================================================
             // MODALS
+            // ============================================================
             const modals = document.querySelectorAll('.modal-overlay');
             const openTriggers = document.querySelectorAll('[data-modal]');
             const closeButtons = document.querySelectorAll('[data-close]');
@@ -3096,6 +3393,8 @@
             function closeModal(modal) {
                 modal.classList.remove('open');
                 document.body.style.overflow = '';
+                // Pause any videos
+                modal.querySelectorAll('video').forEach(function(v) { v.pause(); });
             }
 
             openTriggers.forEach(function(trigger) {
@@ -3125,16 +3424,19 @@
                 if (e.key === 'Escape') {
                     const openModal = document.querySelector('.modal-overlay.open');
                     if (openModal) closeModal(openModal);
-                    closeLightbox();
+                    if (lightbox.classList.contains('open')) closeLightbox();
                 }
             });
 
+            // ============================================================
             // LIGHTBOX
+            // ============================================================
             const lightbox = document.getElementById('lightbox');
             const lightboxContent = document.getElementById('lightboxContent');
             const lightboxClose = document.getElementById('lightboxClose');
             const lightboxPrev = document.getElementById('lightboxPrev');
             const lightboxNext = document.getElementById('lightboxNext');
+            const lightboxCounter = document.getElementById('lightboxCounter');
             let lightboxItems = [];
             let currentIndex = 0;
 
@@ -3157,6 +3459,9 @@
                 lightboxContent.innerHTML = '';
                 lightbox.classList.add('open');
                 document.body.style.overflow = 'hidden';
+
+                // Update counter
+                lightboxCounter.textContent = (currentIndex + 1) + ' / ' + lightboxItems.length;
 
                 if (item.type === 'youtube') {
                     const iframe = document.createElement('iframe');
@@ -3215,8 +3520,9 @@
 
             document.addEventListener('keydown', function(e) {
                 if (lightbox.classList.contains('open')) {
-                    if (e.key === 'ArrowLeft') { e.preventDefault(); openLightbox(currentIndex - 1); }
-                    else if (e.key === 'ArrowRight') { e.preventDefault(); openLightbox(currentIndex + 1); }
+                    if (e.key === 'ArrowLeft') { e.preventDefault();
+                        openLightbox(currentIndex - 1); } else if (e.key === 'ArrowRight') { e.preventDefault();
+                        openLightbox(currentIndex + 1); }
                 }
             });
 
@@ -3232,7 +3538,9 @@
                 }
             }, { passive: true });
 
+            // ============================================================
             // SMOOTH SCROLL
+            // ============================================================
             document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
                 anchor.addEventListener('click', function(e) {
                     const targetId = this.getAttribute('href');
@@ -3247,7 +3555,9 @@
                 });
             });
 
+            // ============================================================
             // VIDEO ERROR FALLBACK
+            // ============================================================
             document.querySelectorAll('.video-item video').forEach(function(video) {
                 video.addEventListener('error', function() {
                     const item = this.closest('.video-item');
@@ -3256,8 +3566,10 @@
                     const src = this.querySelector('source')?.src || this.src || '#';
                     const fallback = document.createElement('div');
                     fallback.className = 'video-error-fallback';
-                    fallback.style.cssText = 'background:#fef2f2;color:#991b1b;padding:10px 14px;text-align:center;border-top:1px solid #fecaca;font-size:0.8rem;';
-                    fallback.innerHTML = '<strong>⚠️ Playback issue.</strong> <a href="' + src + '" target="_blank" download style="color:#4a1a7a;font-weight:700;text-decoration:underline;">⬇️ Download</a>';
+                    fallback.style.cssText =
+                        'background:#fef2f2;color:#991b1b;padding:10px 14px;text-align:center;border-top:1px solid #fecaca;font-size:0.8rem;';
+                    fallback.innerHTML = '<strong>⚠️ Playback issue.</strong> <a href="' + src +
+                        '" target="_blank" download style="color:#4a1a7a;font-weight:700;text-decoration:underline;">⬇️ Download</a>';
                     const caption = item.querySelector('.video-caption');
                     if (caption) caption.after(fallback);
                     else item.appendChild(fallback);
@@ -3265,7 +3577,9 @@
                 });
             });
 
+            // ============================================================
             // LIVE DATE/TIME
+            // ============================================================
             function updateTime() {
                 const now = new Date();
                 const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
